@@ -1,0 +1,49 @@
+<div class="theme-switcher">
+  <div class="theme-buttons">
+    <button 
+      class="theme-button"
+      [class.active]="currentTheme === 'light'"
+      (click)="switchTheme('light')"
+      title="明亮模式">
+      <span class="theme-icon">{{ getThemeIcon('light') }}</span>
+      <span class="theme-label">{{ getThemeName('light') }}</span>
+    </button>
+    <button 
+      class="theme-button"
+      [class.active]="currentTheme === 'dark'"
+      (click)="switchTheme('dark')"
+      title="暗黑模式">
+      <span class="theme-icon">{{ getThemeIcon('dark') }}</span>
+      <span class="theme-label">{{ getThemeName('dark') }}</span>
+    </button>
+    <button 
+      class="theme-button"
+      [class.active]="currentTheme === 'custom'"
+      (click)="switchTheme('custom')"
+      title="自定义模式">
+      <span class="theme-icon">{{ getThemeIcon('custom') }}</span>
+      <span class="theme-label">{{ getThemeName('custom') }}</span>
+    </button>
+  </div>
+
+  <!-- 自定义主题选择器 -->
+  <div class="custom-themes" *ngIf="showCustomThemes && currentTheme === 'custom'">
+    <div class="custom-themes-header">
+      <span class="custom-themes-title">预设主题</span>
+    </div>
+    <div class="preset-themes">
+      <button 
+        *ngFor="let preset of presetThemes"
+        class="preset-theme-button"
+        (click)="applyPresetTheme(preset)"
+        [title]="getPresetName(preset)">
+        <div class="preset-theme-preview" [attr.data-theme]="preset">
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+        </div>
+        <span class="preset-theme-name">{{ getPresetName(preset) }}</span>
+      </button>
+    </div>
+  </div>
+</div>

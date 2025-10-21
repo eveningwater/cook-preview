@@ -1,0 +1,32 @@
+{
+  "name": "cook-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cook 菜谱预览 - 多框架版本",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "pnpm -r build",
+    "build:core": "pnpm --filter @cook/core build",
+    "build:angular": "pnpm --filter angular-app build",
+    "build:vue": "pnpm --filter vue-app build",
+    "build:react": "pnpm --filter react-app build",
+    "build:all": "pnpm build:core && pnpm build:angular && pnpm build:vue && pnpm build:react",
+    "dev:angular": "pnpm --filter angular-app dev",
+    "dev:vue": "pnpm --filter vue-app dev",
+    "dev:react": "pnpm --filter react-app dev",
+    "dev:all": "pnpm dev:angular & pnpm dev:vue & pnpm dev:react",
+    "clean": "pnpm -r clean && rm -rf node_modules",
+    "deploy:build": "pnpm build:all && node scripts/build-deploy.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "@types/node": "^22.10.5"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

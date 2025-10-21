@@ -1,0 +1,84 @@
+.category-container {
+  background: var(--theme-surface);
+  border-radius: var(--md-sys-shape-corner-large);
+  box-shadow: 0 2px 8px var(--theme-shadow);
+  border: 1px solid var(--theme-border);
+  margin-bottom: var(--md-sys-spacing-6);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.category-container.search-match {
+  border-color: var(--theme-primary);
+  box-shadow: 0 4px 12px rgba(var(--theme-primary-rgb), 0.2);
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--md-sys-spacing-4) var(--md-sys-spacing-6);
+  background: var(--theme-surface-container);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid var(--theme-border);
+}
+
+.category-header:hover {
+  background: var(--theme-surface-container-high);
+}
+
+.category-header.search-highlight {
+  background: rgba(var(--theme-primary-rgb), 0.1);
+  border-bottom-color: var(--theme-primary);
+}
+
+.category-title {
+  margin: 0;
+  color: var(--theme-text);
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-2);
+}
+
+.category-title::before {
+  content: '🍽️';
+  font-size: 1.2rem;
+}
+
+.expand-icon {
+  font-size: 1.2rem;
+  color: var(--theme-text-secondary);
+  transition: transform 0.3s ease;
+  user-select: none;
+}
+
+.expand-icon.expanded {
+  transform: rotate(180deg);
+}
+
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--md-sys-spacing-4);
+  padding: var(--md-sys-spacing-6);
+  background: var(--theme-background);
+}
+
+@media (max-width: 768px) {
+  .category-header {
+    padding: var(--md-sys-spacing-3) var(--md-sys-spacing-4);
+  }
+  
+  .category-title {
+    font-size: 1.25rem;
+  }
+  
+  .recipes-grid {
+    grid-template-columns: 1fr;
+    padding: var(--md-sys-spacing-4);
+    gap: var(--md-sys-spacing-3);
+  }
+}

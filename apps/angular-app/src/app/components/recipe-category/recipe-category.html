@@ -1,0 +1,15 @@
+<div class="category-container" [class.search-match]="category.hasSearchMatch">
+  <div class="category-header" (click)="toggleExpanded()" [class.search-highlight]="category.hasSearchMatch">
+    <h2 class="category-title">{{ category.name }}</h2>
+    <span class="expand-icon" [class.expanded]="isExpanded">▼</span>
+  </div>
+  
+  <div class="recipes-grid" *ngIf="isExpanded && category.recipes">
+    <app-recipe-card 
+      *ngFor="let recipe of category.recipes" 
+      [recipe]="recipe"
+      [categoryPath]="category.path"
+      [searchTerm]="searchTerm">
+    </app-recipe-card>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+.version-switcher {
+  display: inline-flex;
+  
+  button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: white;
+  }
+  
+  .version-label {
+    font-size: 14px;
+  }
+  
+  .dropdown-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// 菜单面板样式
+::ng-deep .mat-mdc-menu-panel {
+  background-color: var(--theme-surface, #ffffff);
+  
+  .mat-mdc-menu-content {
+    background-color: var(--theme-surface, #ffffff);
+    padding: 8px 0;
+  }
+}
+
+.current-version {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--theme-primary, #1976d2);
+  font-weight: 600;
+  cursor: default;
+  background-color: var(--theme-surface, #ffffff);
+  
+  mat-icon {
+    color: var(--theme-primary, #1976d2);
+  }
+}
+
+.version-option {
+  padding: 12px 16px !important;
+  min-height: 64px;
+  background-color: var(--theme-surface, #ffffff);
+  
+  .version-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .version-icon {
+    font-size: 24px;
+    line-height: 1;
+  }
+  
+  .version-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+  }
+  
+  .version-name {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--theme-text, #333);
+  }
+  
+  .version-desc {
+    font-size: 12px;
+    opacity: 0.7;
+    line-height: 1.2;
+    color: var(--theme-text-secondary, #666);
+  }
+  
+  &:hover {
+    background-color: var(--theme-background, #f5f5f5);
+    
+    .version-icon {
+      transform: scale(1.1);
+      transition: transform 0.2s ease;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .version-switcher {
+    .version-label {
+      display: none;
+    }
+  }
+}
+

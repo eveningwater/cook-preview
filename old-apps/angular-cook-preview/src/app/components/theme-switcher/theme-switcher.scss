@@ -1,0 +1,220 @@
+.theme-switcher {
+  position: relative;
+}
+
+.theme-buttons {
+  display: flex;
+  gap: 6px;
+  padding: 3px;
+  background: var(--theme-surface, #fff);
+  border: 1px solid var(--theme-border, #e0e0e0);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--theme-shadow, rgba(0, 0, 0, 0.1));
+  height: fit-content;
+}
+
+.theme-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 13px;
+  color: var(--theme-text-secondary, #666);
+  min-height: auto;
+
+  &:hover {
+    background: var(--theme-background, #f5f5f5);
+    color: var(--theme-text, #333);
+  }
+
+  &.active {
+    background: var(--theme-primary, #ff6b35);
+    color: white;
+    font-weight: 500;
+
+    .theme-icon {
+      transform: scale(1.2);
+    }
+  }
+}
+
+.theme-icon {
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+.theme-label {
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.custom-themes {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--theme-surface, #fff);
+  border: 1px solid var(--theme-border, #e0e0e0);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px var(--theme-shadow, rgba(0, 0, 0, 0.1));
+  padding: 8px;
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom-themes-header {
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--theme-border, #e0e0e0);
+}
+
+.custom-themes-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--theme-text, #333);
+}
+
+.preset-themes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 6px;
+}
+
+.preset-theme-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 6px;
+  border: 1px solid var(--theme-border, #e0e0e0);
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--theme-background, #f5f5f5);
+    border-color: var(--theme-primary, #ff6b35);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--theme-shadow, rgba(0, 0, 0, 0.1));
+  }
+}
+
+.preset-theme-preview {
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border-radius: 4px;
+  background: var(--preview-bg, #f5f5f5);
+
+  &[data-theme="ocean"] {
+    --preview-bg: #f0f8ff;
+    .preview-dot:nth-child(1) { background: #0077be; }
+    .preview-dot:nth-child(2) { background: #00a8e8; }
+    .preview-dot:nth-child(3) { background: #0096c7; }
+  }
+
+  &[data-theme="forest"] {
+    --preview-bg: #f1faee;
+    .preview-dot:nth-child(1) { background: #2d6a4f; }
+    .preview-dot:nth-child(2) { background: #52b788; }
+    .preview-dot:nth-child(3) { background: #40916c; }
+  }
+
+  &[data-theme="sunset"] {
+    --preview-bg: #fef6e4;
+    .preview-dot:nth-child(1) { background: #e76f51; }
+    .preview-dot:nth-child(2) { background: #f4a261; }
+    .preview-dot:nth-child(3) { background: #e9c46a; }
+  }
+}
+
+.preview-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+
+  .preset-theme-button:hover & {
+    transform: scale(1.1);
+  }
+}
+
+.preset-theme-name {
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--theme-text-secondary, #666);
+  font-weight: 500;
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .theme-switcher {
+    width: 100%;
+  }
+
+  .theme-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .theme-button {
+    flex: 1;
+    padding: 10px 8px;
+    justify-content: center;
+    
+    .theme-label {
+      font-size: 12px;
+    }
+  }
+
+  .theme-icon {
+    font-size: 16px;
+  }
+
+  .custom-themes {
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  .preset-themes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-button {
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 6px;
+    
+    .theme-label {
+      font-size: 11px;
+    }
+  }
+
+  .theme-icon {
+    font-size: 20px;
+  }
+}

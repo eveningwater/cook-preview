@@ -1,0 +1,15 @@
+<mat-form-field class="version-switcher">
+  <mat-label>版本选择</mat-label>
+  <mat-select 
+    [value]="currentVersion" 
+    (selectionChange)="onVersionChange($event)"
+  >
+    <mat-option 
+      *ngFor="let version of versions" 
+      [value]="version.key"
+      [disabled]="version.disabled">
+      <mat-icon class="version-icon">{{ version.icon }}</mat-icon>
+      {{ version.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

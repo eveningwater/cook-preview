@@ -1,0 +1,27 @@
+<div class="version-switcher">
+  <button mat-button [matMenuTriggerFor]="versionMenu">
+    <mat-icon>apps</mat-icon>
+    <span class="version-label">版本</span>
+    <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
+  </button>
+  
+  <mat-menu #versionMenu="matMenu">
+    <button mat-menu-item disabled class="current-version">
+      <mat-icon>check</mat-icon>
+      <span>Angular 版本</span>
+    </button>
+    
+    <mat-divider></mat-divider>
+    
+    <button mat-menu-item (click)="switchToVue()" class="version-option">
+      <div class="version-content">
+        <span class="version-icon">⚡</span>
+        <div class="version-info">
+          <div class="version-name">Vue 3 版本</div>
+          <div class="version-desc">切换到 Vue 实现</div>
+        </div>
+      </div>
+    </button>
+  </mat-menu>
+</div>
+

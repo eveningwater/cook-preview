@@ -1,0 +1,174 @@
+// 版本切换器样式 - 与主题切换器保持一致的设计风格
+.version-switcher {
+  --version-font-size: 11px;
+  --version-icon-size: 14px;
+  --version-padding: 4px 8px;
+  --version-border-radius: 6px;
+  --version-background: rgba(255, 255, 255, 0.1);
+  --version-border: rgba(255, 255, 255, 0.3);
+  --version-text: rgba(255, 255, 255, 0.8);
+  --version-hover-bg: rgba(255, 255, 255, 0.2);
+  --version-active-bg: rgba(255, 255, 255, 0.3);
+  --version-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  // 覆盖Material Design默认样式
+  .mat-mdc-form-field {
+    font-size: var(--version-font-size);
+    min-width: 120px;
+
+    .mat-mdc-form-field-wrapper {
+      padding: 0;
+    }
+
+    .mat-mdc-form-field-flex {
+      background: var(--version-background);
+      border: 1px solid var(--version-border);
+      border-radius: var(--version-border-radius);
+      box-shadow: var(--version-shadow);
+      min-height: 28px;
+      padding: 0 12px;
+    }
+
+    .mat-mdc-form-field-outline {
+      display: none;
+    }
+
+    .mat-mdc-form-field-label {
+      color: var(--version-text);
+      font-size: var(--version-font-size);
+      font-weight: 500;
+      margin: 0;
+      transform: none;
+      position: static;
+      line-height: 1;
+    }
+
+    .mat-mdc-select.mat-mdc-select {
+      color: var(--version-text);
+      font-size: var(--version-font-size);
+      font-weight: 500;
+      min-height: 18px;
+      line-height: 1;
+
+      .mat-mdc-select-trigger.mat-mdc-select-trigger {
+        min-height: 18px;
+        padding: 0;
+
+        .mat-mdc-select-value.mat-mdc-select-value {
+          color: var(--version-text);
+          font-size: var(--version-font-size);
+          font-weight: 500;
+          line-height: 1;
+        }
+
+        .mat-mdc-select-arrow-wrapper.mat-mdc-select-arrow-wrapper {
+          .mat-mdc-select-arrow.mat-mdc-select-arrow {
+            color: var(--version-text);
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 全局样式 - 针对Material Select的选项面板
+// 由于选项面板会渲染到body之外，需要全局样式
+.cdk-overlay-container.cdk-overlay-container {
+  .mat-mdc-select-panel.mat-mdc-select-panel {
+    --option-font-size: 12px;
+    --option-icon-size: 16px;
+    --option-padding: 6px 10px;
+    --option-background: var(--theme-surface);
+    --option-text: var(--theme-text);
+    --option-hover-bg: var(--theme-primary);
+    --option-hover-text: var(--md-sys-color-on-primary);
+    --option-border-radius: 6px;
+    --option-shadow: 0 4px 12px var(--theme-shadow);
+
+    background: var(--option-background);
+    border: 1px solid var(--theme-border);
+    border-radius: var(--option-border-radius);
+    box-shadow: var(--option-shadow);
+    min-width: 160px;
+    max-height: 200px;
+    overflow-y: auto;
+
+    .mat-mdc-option.mat-mdc-option {
+      font-size: var(--option-font-size);
+      color: var(--option-text);
+      padding: var(--option-padding);
+      min-height: 32px;
+      line-height: 1.3;
+
+      &:hover {
+        background: var(--option-hover-bg);
+        color: var(--option-hover-text);
+      }
+
+      &.mat-mdc-option-active {
+        background: var(--option-hover-bg);
+        color: var(--option-hover-text);
+      }
+
+      .version-icon.version-icon {
+        font-size: var(--option-icon-size);
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+
+      .version-status.version-status {
+        font-size: 10px;
+        opacity: 0.8;
+        margin-left: 4px;
+      }
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .version-switcher {
+    --version-font-size: 10px;
+    --version-icon-size: 12px;
+    --version-padding: 3px 6px;
+
+    .mat-mdc-form-field {
+      min-width: 100px;
+
+      .mat-mdc-form-field-flex {
+        min-height: 24px;
+        padding: 0 8px;
+      }
+
+      .mat-mdc-select {
+        min-height: 16px;
+
+        .mat-mdc-select-trigger {
+          min-height: 16px;
+        }
+      }
+    }
+  }
+
+  .cdk-overlay-container.cdk-overlay-container .mat-mdc-select-panel.mat-mdc-select-panel {
+    --option-font-size: 11px;
+    --option-icon-size: 14px;
+    --option-padding: 5px 8px;
+    min-width: 140px;
+    max-height: 180px;
+
+    .mat-mdc-option.mat-mdc-option {
+      min-height: 28px;
+
+      .version-icon.version-icon {
+        font-size: 14px;
+        margin-right: 4px;
+      }
+
+      .version-status.version-status {
+        font-size: 9px;
+      }
+    }
+  }
+}

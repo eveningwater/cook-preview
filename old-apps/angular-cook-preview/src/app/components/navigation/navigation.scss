@@ -1,0 +1,162 @@
+// 增加选择器权重来替代 !important
+.navigation-toolbar {
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
+  box-shadow: 0 2px 4px var(--theme-shadow);
+  margin-bottom: 24px;
+  border-radius: 0 0 8px 8px;
+  min-height: 64px;
+  height: auto;
+  padding: 16px 0;
+  transition: var(--theme-transition);
+}
+
+.nav-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  
+  .brand-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .brand-text {
+    font-size: 18px;
+  }
+}
+
+.nav-theme {
+  margin-left: auto;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+// 增加选择器权重：.nav-menu .nav-item
+.nav-menu .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: auto;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  
+  // 增加选择器权重：.nav-menu .nav-item.mat-mdc-raised-button
+  &.mat-mdc-raised-button {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--theme-primary);
+    box-shadow: 0 2px 4px var(--theme-shadow);
+    
+    &:hover {
+      background-color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px var(--theme-shadow);
+    }
+    
+    &.active {
+      background-color: white;
+      color: var(--theme-primary);
+      font-weight: 600;
+    }
+  }
+  
+  // 增加选择器权重：.nav-menu .nav-item.mat-mdc-outlined-button
+  &.mat-mdc-outlined-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px var(--theme-shadow);
+    }
+    
+    &.active {
+      background-color: rgba(255, 255, 255, 0.9);
+      color: var(--theme-primary);
+      border-color: white;
+      font-weight: 600;
+    }
+  }
+  
+  // 增加选择器权重：.nav-menu .nav-item mat-icon
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .nav-content {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 16px;
+  }
+  
+  .nav-brand {
+    font-size: 16px;
+    
+    .brand-text {
+      font-size: 16px;
+    }
+  }
+  
+  .nav-menu {
+    justify-content: center;
+    gap: 6px;
+  }
+  
+  // 增加选择器权重：@media .nav-menu .nav-item
+  .nav-menu .nav-item {
+    height: 36px;
+    font-size: 12px;
+    
+    // 增加选择器权重：@media .nav-menu .nav-item mat-icon
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-menu {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  // 增加选择器权重：@media .nav-menu .nav-item
+  .nav-menu .nav-item {
+    flex: 1;
+    min-width: calc(50% - 3px);
+    justify-content: center;
+  }
+}

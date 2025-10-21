@@ -1,0 +1,68 @@
+<!-- 导航栏 -->
+<app-navigation 
+  *ngIf="!loading && !error"
+  [categories]="categories"
+  [activeCategory]="activeCategory"
+  (categorySelected)="onCategorySelected($event)"
+  (showAll)="onShowAll()">
+</app-navigation>
+
+<!-- 搜索栏 -->
+<app-search 
+  *ngIf="!loading && !error"
+  (searchChanged)="onSearchChanged($event)">
+</app-search>
+
+<main class="app-main">
+  <!-- 加载状态 -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-animation">
+      <div class="loading-spinner"></div>
+      <div class="loading-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <p class="loading-text">正在加载菜谱数据...</p>
+  </div>
+
+  <!-- 错误状态 -->
+  <div class="error-container" *ngIf="error">
+    <div class="error-message">
+      <div class="error-icon">😔</div>
+      <h3>加载失败</h3>
+      <p>{{ error }}</p>
+      <button class="retry-button" (click)="retryLoad()">
+        <span class="retry-icon">🔄</span>
+        重试
+      </button>
+    </div>
+  </div>
+
+  <!-- 搜索结果提示 -->
+  <div class="search-results-info" *ngIf="!loading && !error && searchTerm">
+    <p>
+      <span class="search-icon">🔍</span>
+      搜索 "{{ searchTerm }}" 的结果
+      <span class="results-count">({{ getTotalRecipes() }} 个菜谱)</span>
+    </p>
+  </div>
+
+  <!-- 菜谱分类列表 -->
+  <div class="categories-container" *ngIf="!loading && !error">
+    <app-recipe-category 
+      *ngFor="let category of filteredCategories" 
+      [category]="category"
+      [searchTerm]="searchTerm">
+    </app-recipe-category>
+    
+    <!-- 无结果提示 -->
+    <div class="no-results" *ngIf="filteredCategories.length === 0 && searchTerm">
+      <div class="no-results-icon">🔍</div>
+      <h3>未找到相关菜谱</h3>
+      <p>尝试使用其他关键词搜索，或浏览所有菜谱分类</p>
+      <button class="show-all-button" (click)="onShowAll()">查看所有菜谱</button>
+    </div>
+  </div>
+</main>

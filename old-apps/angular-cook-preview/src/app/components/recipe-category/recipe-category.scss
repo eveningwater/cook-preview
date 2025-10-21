@@ -1,0 +1,125 @@
+.category-container {
+  background: var(--theme-surface);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 2px 8px var(--theme-shadow);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  border: 1px solid var(--theme-border);
+}
+
+.category-container.search-match {
+  border: 2px solid var(--theme-primary);
+  box-shadow: 0 4px 12px var(--theme-shadow);
+}
+
+.category-container:hover {
+  box-shadow: 0 4px 16px var(--theme-shadow);
+  transform: translateY(-2px);
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  background: var(--theme-primary);
+  color: white;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  user-select: none;
+}
+
+.category-header:hover {
+  background: var(--theme-secondary);
+  box-shadow: 0 2px 8px var(--theme-shadow);
+}
+
+.category-header.search-highlight {
+  background: var(--theme-secondary);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 107, 53, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 53, 0);
+  }
+}
+
+.category-title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.expand-icon {
+  font-size: var(--font-size-lg);
+  transition: transform var(--transition-normal);
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+}
+
+.expand-icon.expanded {
+  transform: rotate(180deg);
+}
+
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background: var(--theme-background);
+  animation: fadeInUp 0.3s ease-out;
+  transition: var(--theme-transition);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .category-header {
+    padding: var(--spacing-md);
+  }
+  
+  .category-title {
+    font-size: var(--font-size-lg);
+  }
+  
+  .recipes-grid {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .category-header {
+    padding: var(--spacing-sm);
+  }
+  
+  .category-title {
+    font-size: var(--font-size-base);
+  }
+  
+  .recipes-grid {
+    padding: var(--spacing-sm);
+  }
+}

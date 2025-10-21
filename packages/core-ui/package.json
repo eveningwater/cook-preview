@@ -1,0 +1,16 @@
+{
+  "name": "@cook/core-ui",
+  "version": "1.0.0",
+  "description": "Core UI components for Cook applications",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && npm run copy-assets",
+    "copy-assets": "cp -r src/components/loading/*.css dist/components/loading/ && cp -r src/components/back-to-top/*.css dist/components/back-to-top/ && cp -r src/components/error-boundary/*.css dist/components/error-boundary/",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist node_modules"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

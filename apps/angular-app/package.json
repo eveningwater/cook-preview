@@ -1,0 +1,46 @@
+{
+  "name": "angular-app",
+  "version": "1.0.0",
+  "description": "Cook 菜谱预览 - Angular 版本",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "dev": "ng serve",
+    "build": "ng build && node scripts/post-build.js",
+    "build:prod": "ng build --configuration production && node scripts/post-build.js",
+    "build:prod:env": "ng build --configuration production --define=\"GIT_TOKEN='${GIT_TOKEN}'\"",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@angular/animations": "^20.3.2",
+    "@angular/cdk": "^20.2.5",
+    "@angular/common": "^20.3.0",
+    "@angular/compiler": "^20.3.0",
+    "@angular/core": "^20.3.0",
+    "@angular/forms": "^20.3.0",
+    "@angular/material": "^20.2.5",
+    "@angular/platform-browser": "^20.3.0",
+    "@angular/router": "^20.3.0",
+    "@cook/core": "workspace:*",
+    "@cook/core-ui": "workspace:*",
+    "marked": "^16.4.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.3.3",
+    "@angular/cli": "^20.3.3",
+    "@angular/compiler-cli": "^20.3.0",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.9.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.9.2"
+  }
+}

@@ -1,0 +1,11 @@
+<a [routerLink]="getRecipeUrl()" class="recipe-card-link">
+  <div class="recipe-card">
+    <div class="recipe-content">
+      <h3 class="recipe-title" [innerHTML]="highlightText(recipe.name, searchTerm)"></h3>
+      <p class="recipe-path">{{ recipe.path }}</p>
+    </div>
+    <div class="recipe-arrow">
+      <span class="arrow-icon">→</span>
+    </div>
+  </div>
+</a>

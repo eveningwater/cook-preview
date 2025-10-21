@@ -1,0 +1,704 @@
+/* Material Design 3.0 Global Styles */
+
+// 全局样式
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', 'Google Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--theme-text);
+  transition: var(--theme-transition);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// ============================================
+// 主题系统 - 支持 light, dark, custom 三种模式
+// ============================================
+
+// 主题通用变量（会根据主题模式动态变化）
+:root {
+  // 默认为 light 主题
+  --theme-primary: #ff6b35;
+  --theme-secondary: #f7931e;
+  --theme-background: #ffffff;
+  --theme-surface: #fafafa;
+  --theme-text: #1a1a1a;
+  --theme-text-secondary: #666666;
+  --theme-border: #e0e0e0;
+  --theme-shadow: rgba(0, 0, 0, 0.1);
+  
+  // 过渡动画
+  --theme-transition: all 0.3s ease;
+}
+
+// Light 主题（默认）
+.theme-light {
+  --theme-primary: #ff6b35;
+  --theme-secondary: #f7931e;
+  --theme-background: #ffffff;
+  --theme-surface: #fafafa;
+  --theme-text: #1a1a1a;
+  --theme-text-secondary: #666666;
+  --theme-border: #e0e0e0;
+  --theme-shadow: rgba(0, 0, 0, 0.1);
+}
+
+// Dark 主题
+.theme-dark {
+  --theme-primary: #ff8c61;
+  --theme-secondary: #ffb84d;
+  --theme-background: #1a1a1a;
+  --theme-surface: #2d2d2d;
+  --theme-text: #ffffff;
+  --theme-text-secondary: #b0b0b0;
+  --theme-border: #404040;
+  --theme-shadow: rgba(0, 0, 0, 0.3);
+}
+
+// Custom 主题（使用 CSS 变量，由 TypeScript 动态设置）
+// 这些变量会由 ThemeService 在运行时动态设置
+// --theme-primary, --theme-secondary, --theme-background 等
+
+// Material Design 3.0 设计系统变量
+:root {
+  // Material Design 3.0 主色调 - 温暖橙色系
+  --md-sys-color-primary: #D84315;           // 主色
+  --md-sys-color-on-primary: #FFFFFF;        // 主色上的文字
+  --md-sys-color-primary-container: #FFDAD6; // 主色容器
+  --md-sys-color-on-primary-container: #410E00; // 主色容器上的文字
+  
+  // Material Design 3.0 次要色调 - 绿色系
+  --md-sys-color-secondary: #77574A;         // 次要色
+  --md-sys-color-on-secondary: #FFFFFF;      // 次要色上的文字
+  --md-sys-color-secondary-container: #FFDAD6; // 次要色容器
+  --md-sys-color-on-secondary-container: #2C160B; // 次要色容器上的文字
+  
+  // Material Design 3.0 第三色调 - 蓝色系
+  --md-sys-color-tertiary: #6B5B95;          // 第三色
+  --md-sys-color-on-tertiary: #FFFFFF;       // 第三色上的文字
+  --md-sys-color-tertiary-container: #E8DDFF; // 第三色容器
+  --md-sys-color-on-tertiary-container: #241A2E; // 第三色容器上的文字
+  
+  // Material Design 3.0 错误色
+  --md-sys-color-error: #BA1A1A;             // 错误色
+  --md-sys-color-on-error: #FFFFFF;          // 错误色上的文字
+  --md-sys-color-error-container: #FFDAD6;   // 错误色容器
+  --md-sys-color-on-error-container: #410002; // 错误色容器上的文字
+  
+  // Material Design 3.0 表面色
+  --md-sys-color-surface: #FFFBF9;           // 表面色
+  --md-sys-color-on-surface: #201A18;        // 表面上的文字
+  --md-sys-color-surface-variant: #F5DDD6;   // 表面变体
+  --md-sys-color-on-surface-variant: #534341; // 表面变体上的文字
+  --md-sys-color-surface-container: #F5DDD6;  // 表面容器
+  --md-sys-color-surface-container-high: #EFD5CE; // 高表面容器
+  --md-sys-color-surface-container-highest: #E9CFC7; // 最高表面容器
+  --md-sys-color-surface-container-low: #F9E2DB; // 低表面容器
+  --md-sys-color-surface-container-lowest: #FFFFFF; // 最低表面容器
+  
+  // Material Design 3.0 背景色
+  --md-sys-color-background: #FFFBF9;        // 背景色
+  --md-sys-color-on-background: #201A18;     // 背景上的文字
+  
+  // Material Design 3.0 轮廓色
+  --md-sys-color-outline: #85736F;           // 轮廓色
+  --md-sys-color-outline-variant: #D8C2BC;   // 轮廓变体
+  
+  // Material Design 3.0 阴影和状态层
+  --md-sys-color-shadow: #000000;            // 阴影色
+  --md-sys-color-scrim: #000000;             // 遮罩色
+  --md-sys-color-surface-tint: #D84315;      // 表面色调
+  --md-sys-color-inverse-surface: #362F2D;   // 反向表面
+  --md-sys-color-inverse-on-surface: #FBEEE9; // 反向表面上的文字
+  --md-sys-color-inverse-primary: #FFB4A0;   // 反向主色
+  
+  // 兼容性颜色变量（保持向后兼容）
+  --primary-color: var(--md-sys-color-primary);
+  --primary-light: #FFB4A0;
+  --primary-dark: #9A2C00;
+  --accent-color: var(--md-sys-color-secondary);
+  --accent-light: #A67B6B;
+  --accent-dark: #5C3E2F;
+  --secondary-color: var(--md-sys-color-tertiary);
+  --secondary-light: #9B8BB5;
+  --secondary-dark: #4A3A5C;
+  
+  // Material Design 3.0 字体系统
+  --md-sys-typescale-display-large-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-display-large-size: 57px;
+  --md-sys-typescale-display-large-weight: 400;
+  --md-sys-typescale-display-large-line-height: 64px;
+  
+  --md-sys-typescale-display-medium-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-display-medium-size: 45px;
+  --md-sys-typescale-display-medium-weight: 400;
+  --md-sys-typescale-display-medium-line-height: 52px;
+  
+  --md-sys-typescale-display-small-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-display-small-size: 36px;
+  --md-sys-typescale-display-small-weight: 400;
+  --md-sys-typescale-display-small-line-height: 44px;
+  
+  --md-sys-typescale-headline-large-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-headline-large-size: 32px;
+  --md-sys-typescale-headline-large-weight: 400;
+  --md-sys-typescale-headline-large-line-height: 40px;
+  
+  --md-sys-typescale-headline-medium-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-headline-medium-size: 28px;
+  --md-sys-typescale-headline-medium-weight: 400;
+  --md-sys-typescale-headline-medium-line-height: 36px;
+  
+  --md-sys-typescale-headline-small-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-headline-small-size: 24px;
+  --md-sys-typescale-headline-small-weight: 400;
+  --md-sys-typescale-headline-small-line-height: 32px;
+  
+  --md-sys-typescale-title-large-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-title-large-size: 22px;
+  --md-sys-typescale-title-large-weight: 400;
+  --md-sys-typescale-title-large-line-height: 28px;
+  
+  --md-sys-typescale-title-medium-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-title-medium-size: 16px;
+  --md-sys-typescale-title-medium-weight: 500;
+  --md-sys-typescale-title-medium-line-height: 24px;
+  
+  --md-sys-typescale-title-small-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-title-small-size: 14px;
+  --md-sys-typescale-title-small-weight: 500;
+  --md-sys-typescale-title-small-line-height: 20px;
+  
+  --md-sys-typescale-body-large-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-body-large-size: 16px;
+  --md-sys-typescale-body-large-weight: 400;
+  --md-sys-typescale-body-large-line-height: 24px;
+  
+  --md-sys-typescale-body-medium-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-body-medium-size: 14px;
+  --md-sys-typescale-body-medium-weight: 400;
+  --md-sys-typescale-body-medium-line-height: 20px;
+  
+  --md-sys-typescale-body-small-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-body-small-size: 12px;
+  --md-sys-typescale-body-small-weight: 400;
+  --md-sys-typescale-body-small-line-height: 16px;
+  
+  --md-sys-typescale-label-large-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-label-large-size: 14px;
+  --md-sys-typescale-label-large-weight: 500;
+  --md-sys-typescale-label-large-line-height: 20px;
+  
+  --md-sys-typescale-label-medium-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-label-medium-size: 12px;
+  --md-sys-typescale-label-medium-weight: 500;
+  --md-sys-typescale-label-medium-line-height: 16px;
+  
+  --md-sys-typescale-label-small-font: 'Roboto', 'Google Sans', sans-serif;
+  --md-sys-typescale-label-small-size: 11px;
+  --md-sys-typescale-label-small-weight: 500;
+  --md-sys-typescale-label-small-line-height: 16px;
+  
+  // Angular Material CSS变量 - 使用主题颜色
+  --mat-form-field-outlined-outline-color: var(--theme-border);
+  --mat-form-field-outlined-hover-outline-color: var(--theme-primary);
+  --mat-form-field-outlined-focus-outline-color: var(--theme-primary);
+  --mat-form-field-label-text-color: var(--theme-text-secondary);
+  --mat-form-field-input-text-color: var(--theme-text);
+  --mat-form-field-input-placeholder-color: var(--theme-text-secondary);
+  --mat-form-field-floating-label-text-color: var(--theme-text-secondary);
+  --mdc-outlined-text-field-label-text-color: var(--theme-text-secondary);
+  --mdc-outlined-text-field-input-text-color: var(--theme-text);
+  
+  // Angular Material 按钮变量
+  --mat-mdc-button-text-color: var(--theme-primary);
+  --mat-mdc-button-background-color: transparent;
+  --mat-mdc-button-hover-state-layer-color: var(--theme-primary);
+  --mat-mdc-button-focus-state-layer-color: var(--theme-primary);
+  --mat-mdc-button-pressed-state-layer-color: var(--theme-primary);
+  
+  // Angular Material 卡片变量
+  --mat-mdc-card-container-color: var(--theme-surface);
+  --mat-mdc-card-container-elevation: 1;
+  
+  // Angular Material 图标变量
+  --mat-icon-color: var(--theme-text-secondary);
+  --mat-icon-size: 24px;
+  
+  // Material Design 3.0 间距系统（8px网格）
+  --md-sys-spacing-0: 0px;
+  --md-sys-spacing-1: 4px;
+  --md-sys-spacing-2: 8px;
+  --md-sys-spacing-3: 12px;
+  --md-sys-spacing-4: 16px;
+  --md-sys-spacing-5: 20px;
+  --md-sys-spacing-6: 24px;
+  --md-sys-spacing-7: 28px;
+  --md-sys-spacing-8: 32px;
+  --md-sys-spacing-9: 36px;
+  --md-sys-spacing-10: 40px;
+  --md-sys-spacing-11: 44px;
+  --md-sys-spacing-12: 48px;
+  --md-sys-spacing-13: 52px;
+  --md-sys-spacing-14: 56px;
+  --md-sys-spacing-15: 60px;
+  --md-sys-spacing-16: 64px;
+  
+  // Material Design 3.0 圆角系统
+  --md-sys-shape-corner-none: 0px;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+  
+  // Material Design 3.0 阴影系统
+  --md-sys-elevation-level0: none;
+  --md-sys-elevation-level1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level3: 0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level4: 0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15);
+  --md-sys-elevation-level5: 0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+  
+  // 兼容性变量（向后兼容）
+  --bg-primary: var(--md-sys-color-background);
+  --bg-secondary: var(--md-sys-color-surface-container-lowest);
+  --bg-tertiary: var(--md-sys-color-surface-container);
+  --bg-card: var(--md-sys-color-surface-container-lowest);
+  --bg-dark: var(--md-sys-color-inverse-surface);
+  
+  --text-primary: var(--md-sys-color-on-background);
+  --text-secondary: var(--md-sys-color-on-surface-variant);
+  --text-light: var(--md-sys-color-on-primary);
+  --text-muted: var(--md-sys-color-on-surface-variant);
+  
+  --border-color: var(--md-sys-color-outline);
+  --border-light: var(--md-sys-color-outline-variant);
+  --border-medium: var(--md-sys-color-outline);
+  --border-accent: var(--md-sys-color-primary);
+  
+  --shadow-sm: var(--md-sys-elevation-level1);
+  --shadow-md: var(--md-sys-elevation-level2);
+  --shadow-lg: var(--md-sys-elevation-level3);
+  --shadow-card: var(--md-sys-elevation-level1);
+  --shadow-hover: var(--md-sys-elevation-level2);
+  --shadow-accent: var(--md-sys-elevation-level2);
+  
+  --spacing-xs: var(--md-sys-spacing-1);
+  --spacing-sm: var(--md-sys-spacing-2);
+  --spacing-md: var(--md-sys-spacing-4);
+  --spacing-lg: var(--md-sys-spacing-6);
+  --spacing-xl: var(--md-sys-spacing-8);
+  
+  --font-size-xs: var(--md-sys-typescale-body-small-size);
+  --font-size-sm: var(--md-sys-typescale-body-medium-size);
+  --font-size-base: var(--md-sys-typescale-body-large-size);
+  --font-size-lg: var(--md-sys-typescale-title-large-size);
+  --font-size-xl: var(--md-sys-typescale-headline-small-size);
+  --font-size-2xl: var(--md-sys-typescale-headline-medium-size);
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+  
+  --border-radius: var(--md-sys-shape-corner-small);
+  --border-radius-lg: var(--md-sys-shape-corner-medium);
+  
+  --transition-fast: 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+// Material Design 3.0 应用容器
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  color: var(--md-sys-color-on-background);
+  position: relative;
+  z-index: 1;
+}
+
+// 炫酷背景动态效果 - 设置到body元素
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--theme-background);
+  transition: var(--theme-transition);
+  z-index: -2;
+  pointer-events: none;
+}
+
+// 浮动粒子效果 - 设置到body元素
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(3px 3px at 20px 30px, var(--theme-primary), transparent),
+    radial-gradient(2px 2px at 40px 70px, var(--theme-secondary), transparent),
+    radial-gradient(2px 2px at 90px 40px, var(--theme-primary), transparent),
+    radial-gradient(1px 1px at 130px 80px, var(--theme-secondary), transparent),
+    radial-gradient(3px 3px at 160px 30px, var(--theme-primary), transparent),
+    radial-gradient(1px 1px at 200px 60px, var(--theme-secondary), transparent),
+    radial-gradient(2px 2px at 80px 120px, var(--theme-primary), transparent),
+    radial-gradient(1px 1px at 150px 150px, var(--theme-secondary), transparent);
+  background-repeat: repeat;
+  background-size: 250px 250px;
+  animation: particleFloat 15s linear infinite;
+  opacity: 0.15;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity var(--theme-transition);
+}
+
+// Dark 主题下降低粒子效果的不透明度
+.theme-dark body::after {
+  opacity: 0.08;
+}
+
+// Material Design 3.0 滚动条
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--theme-surface);
+  border-radius: var(--md-sys-shape-corner-extra-small);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-border);
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  transition: background var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-primary);
+}
+
+// Material Design 3.0 选择文本样式
+::selection {
+  background: var(--theme-primary);
+  color: white;
+}
+
+::-moz-selection {
+  background: var(--theme-primary);
+  color: white;
+}
+
+// 粒子浮动动画
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-25px) translateX(15px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(-15px) translateX(-15px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(-35px) translateX(8px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) rotate(360deg);
+  }
+}
+
+// 全局文本元素样式
+h1, h2, h3, h4, h5, h6 {
+  color: var(--theme-text);
+  transition: var(--theme-transition);
+}
+
+p {
+  color: var(--theme-text);
+  transition: var(--theme-transition);
+}
+
+a {
+  color: var(--theme-primary);
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: var(--theme-secondary);
+  }
+}
+
+strong {
+  color: var(--theme-text);
+}
+
+em {
+  color: var(--theme-text-secondary);
+}
+
+// Material Design 3.0 列表样式
+ul, ol {
+  list-style: none;
+  padding-left: 0;
+  margin: var(--md-sys-spacing-4) 0;
+}
+
+li {
+  position: relative;
+  padding-left: var(--md-sys-spacing-6);
+  margin-bottom: var(--md-sys-spacing-2);
+  line-height: 1.6;
+  color: var(--theme-text);
+  font-family: var(--md-sys-typescale-body-large-font);
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+}
+
+// 无序列表样式 - 使用Material Design风格的圆点
+ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.8em;
+  width: 6px;
+  height: 6px;
+  background: var(--theme-primary);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+// 有序列表样式 - 使用Material Design风格的编号
+ol {
+  counter-reset: list-counter;
+}
+
+ol li {
+  counter-increment: list-counter;
+}
+
+ol li::before {
+  content: counter(list-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--theme-primary);
+  color: white;
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--md-sys-typescale-label-medium-font);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  line-height: 1;
+}
+
+// 嵌套列表样式 - 只保留基本间距，不添加特殊样式
+ul ul, ol ol, ul ol, ol ul {
+  margin: var(--md-sys-spacing-2) 0;
+  padding-left: var(--md-sys-spacing-4);
+}
+
+// ul中嵌套ol的特殊处理 - 调整padding-left保持对齐
+ul ol {
+  padding-left: 0;
+}
+
+ul ol li {
+  padding-left: 0;
+}
+
+// 嵌套列表不显示marker
+ul ul li::before,
+ol ol li::before,
+ul ol li::before,
+ol ul li::before,
+ul ul ul li::before,
+ol ol ol li::before,
+ul ol ol li::before,
+ol ul ul li::before {
+  display: none;
+}
+
+// 特殊列表样式 - 用于菜谱步骤
+.recipe-steps {
+  counter-reset: step-counter;
+}
+
+.recipe-steps li {
+  counter-increment: step-counter;
+  padding-left: var(--md-sys-spacing-8);
+  margin-bottom: var(--md-sys-spacing-4);
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: var(--md-sys-shape-corner-small);
+  padding: var(--md-sys-spacing-4);
+  border-left: 3px solid var(--md-sys-color-primary);
+}
+
+.recipe-steps li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: var(--md-sys-spacing-2);
+  top: var(--md-sys-spacing-2);
+  width: 24px;
+  height: 24px;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--md-sys-typescale-label-large-font);
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  line-height: 1;
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+// 材料列表样式
+.recipe-ingredients li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  li {
+    padding-left: var(--md-sys-spacing-5);
+    margin-bottom: var(--md-sys-spacing-1);
+  }
+  
+  ul li::before {
+    width: 5px;
+    height: 5px;
+  }
+  
+  ol li::before {
+    width: 18px;
+    height: 18px;
+    font-size: var(--md-sys-typescale-label-small-size);
+  }
+  
+  .recipe-steps li {
+    padding-left: var(--md-sys-spacing-6);
+    padding: var(--md-sys-spacing-3);
+  }
+  
+  .recipe-steps li::before {
+    width: 20px;
+    height: 20px;
+    font-size: var(--md-sys-typescale-label-medium-size);
+  }
+  
+  // ul中嵌套ol在移动端的特殊处理
+  ul ol {
+    padding-left: 0;
+  }
+  
+  ul ol li {
+    padding-left: 0;
+  }
+  
+  // 嵌套列表在移动端也不显示marker
+  ul ul li::before,
+  ol ol li::before,
+  ul ol li::before,
+  ol ul li::before,
+  ul ul ul li::before,
+  ol ol ol li::before,
+  ul ol ol li::before,
+  ol ul ul li::before {
+    display: none;
+  }
+  
+  // 移动端优化背景效果
+  .app-container::before {
+    animation: backgroundShift 25s ease-in-out infinite;
+    opacity: 0.8;
+  }
+  
+  .app-container::after {
+    animation: particleFloat 18s linear infinite;
+    opacity: 0.3;
+  }
+}
+
+// 性能优化 - 减少动画在低性能设备上的影响
+@media (prefers-reduced-motion: reduce) {
+  .app-container::before,
+  .app-container::after {
+    animation: none;
+  }
+}
+
+// 高对比度模式优化
+@media (prefers-contrast: high) {
+  .app-container::before {
+    opacity: 0.6;
+  }
+  
+  .app-container::after {
+    opacity: 0.2;
+  }
+}
+
+/* 菜谱内容中的超链接样式 */
+.recipe-content .recipe-text a, .recipe-main .recipe-text a, mat-card .recipe-text a {
+  color: var(--md-sys-color-primary) ; text-decoration: none ; border-bottom: 1px solid var(--md-sys-color-primary) ; padding: 1px 2px ; border-radius: 3px ; transition: all 0.2s ease ; font-weight: 500 ; background: rgba(var(--md-sys-color-primary-rgb), 0.05) ; display: inline-block ;
+}
+.recipe-content .recipe-text a:hover, .recipe-main .recipe-text a:hover, mat-card .recipe-text a:hover {
+  color: var(--md-sys-color-on-primary) ; background: var(--md-sys-color-primary) ; border-bottom-color: var(--md-sys-color-primary) ; transform: translateY(-1px) ; box-shadow: 0 2px 4px rgba(var(--md-sys-color-primary-rgb), 0.3) ;
+}
+.recipe-content .recipe-text a:active, .recipe-main .recipe-text a:active, mat-card .recipe-text a:active {
+  transform: translateY(0) ; box-shadow: 0 1px 2px rgba(var(--md-sys-color-primary-rgb), 0.3) ;
+}
+.recipe-content .recipe-text a[href^="http"]::after, .recipe-main .recipe-text a[href^="http"]::after, mat-card .recipe-text a[href^="http"]::after {
+  content: ' ↗' ; font-size: 0.75em ; opacity: 0.8 ; margin-left: 3px ; transition: opacity 0.2s ease ;
+}
+.recipe-content .recipe-text a[href^="http"]:hover::after, .recipe-main .recipe-text a[href^="http"]:hover::after, mat-card .recipe-text a[href^="http"]:hover::after {
+  opacity: 1 ;
+}
+.recipe-content .recipe-text a:visited, .recipe-main .recipe-text a:visited, mat-card .recipe-text a:visited {
+  color: var(--md-sys-color-tertiary) ; border-bottom-color: var(--md-sys-color-tertiary) ; background: rgba(var(--md-sys-color-tertiary-rgb), 0.05) ;
+}
+.recipe-content .recipe-text a:visited:hover, .recipe-main .recipe-text a:visited:hover, mat-card .recipe-text a:visited:hover {
+  color: var(--md-sys-color-on-tertiary) ; background: var(--md-sys-color-tertiary) ; border-bottom-color: var(--md-sys-color-tertiary) ;
+}
+
+/* 菜谱标题和分类徽章中的超链接 */
+.recipe-title a, .category-badge a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.recipe-title a:hover, .category-badge a:hover {
+  color: var(--md-sys-color-primary);
+}

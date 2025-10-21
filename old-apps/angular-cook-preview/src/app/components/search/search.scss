@@ -1,0 +1,115 @@
+.search-container {
+  max-width: 600px;
+  margin: 0 auto 24px;
+  padding: 0 24px;
+}
+
+.search-field {
+  width: 100%;
+}
+
+// 使用 ::ng-deep 穿透样式，提升选择器权重
+::ng-deep {
+  // 背景色 - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field .mat-mdc-text-field-wrapper {
+    background-color: var(--theme-surface);
+    transition: var(--theme-transition);
+  }
+  
+  // 轮廓颜色 - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field .mat-mdc-form-field-outline {
+    color: var(--theme-border);
+  }
+  
+  // 聚焦覆盖层 - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field .mat-mdc-form-field-focus-overlay {
+    background-color: transparent;
+  }
+  
+  // 聚焦时的轮廓 - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field.mat-focused .mat-mdc-form-field-outline-thick {
+    color: var(--theme-primary);
+    border-width: 2px;
+  }
+  
+  // 输入框文字 - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field .mat-mdc-input-element {
+    font-size: 16px;
+    padding: 12px 0;
+    color: var(--theme-text);
+    caret-color: var(--theme-primary);
+  }
+  
+  // Label 样式 - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field .mat-mdc-form-field-label,
+  .search-field.search-field.search-field.search-field .mdc-floating-label {
+    color: var(--theme-text-secondary);
+    font-size: 16px;
+  }
+  
+  // Hover 状态的 label - 保持颜色不变
+  .search-field.search-field.search-field.search-field:hover .mat-mdc-form-field-label,
+  .search-field.search-field.search-field.search-field:hover .mdc-floating-label {
+    color: var(--theme-text-secondary);
+  }
+  
+  // 聚焦时的 label - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field.mat-focused .mat-mdc-form-field-label,
+  .search-field.search-field.search-field.search-field.mat-focused .mdc-floating-label {
+    color: var(--theme-primary);
+  }
+  
+  // 浮动状态的 label - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field.mat-form-field-should-float .mat-mdc-form-field-label,
+  .search-field.search-field.search-field.search-field.mat-form-field-should-float .mdc-floating-label {
+    color: var(--theme-text-secondary);
+  }
+  
+  // 浮动状态 + Hover 的 label - 保持颜色不变
+  .search-field.search-field.search-field.search-field.mat-form-field-should-float:hover .mat-mdc-form-field-label,
+  .search-field.search-field.search-field.search-field.mat-form-field-should-float:hover .mdc-floating-label {
+    color: var(--theme-text-secondary);
+  }
+  
+  // 浮动且聚焦状态的 label - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field.mat-form-field-should-float.mat-focused .mat-mdc-form-field-label,
+  .search-field.search-field.search-field.search-field.mat-form-field-should-float.mat-focused .mdc-floating-label {
+    color: var(--theme-primary);
+  }
+  
+  // 图标颜色 - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field .mat-icon {
+    color: var(--theme-text-secondary);
+  }
+  
+  // Placeholder 颜色 - 重复4次选择器提升权重
+  .search-field.search-field.search-field.search-field .mat-mdc-input-element::placeholder {
+    color: var(--theme-text-secondary);
+    opacity: 0.6;
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .search-container {
+    padding: 0 16px;
+    margin-bottom: 16px;
+  }
+  
+  ::ng-deep {
+    .search-field.search-field.search-field.search-field .mat-mdc-input-element {
+      font-size: 14px;
+    }
+    
+    .search-field.search-field.search-field.search-field .mat-mdc-form-field-label,
+    .search-field.search-field.search-field.search-field .mdc-floating-label {
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .search-container {
+    padding: 0 12px;
+  }
+}

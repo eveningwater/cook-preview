@@ -1,0 +1,17 @@
+<mat-card class="recipe-card" [class.search-highlight]="isSearchMatch">
+  <mat-card-header>
+    <mat-card-title class="recipe-title" [innerHTML]="highlightedTitle"></mat-card-title>
+    <mat-card-subtitle *ngIf="categoryPath">{{ categoryPath }}</mat-card-subtitle>
+  </mat-card-header>
+  
+  <mat-card-actions class="recipe-actions">
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="viewRecipeDetail()"
+      class="view-detail-btn">
+      <mat-icon>menu_book</mat-icon>
+      查看完整菜谱
+    </button>
+  </mat-card-actions>
+</mat-card>

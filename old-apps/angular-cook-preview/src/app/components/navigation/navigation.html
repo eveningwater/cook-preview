@@ -1,0 +1,30 @@
+<mat-toolbar class="navigation-toolbar" color="primary">
+  <div class="nav-content">
+    <div class="nav-brand">
+      <mat-icon class="brand-icon">restaurant</mat-icon>
+      <span class="brand-text">菜谱导航</span>
+    </div>
+    
+    <div class="nav-menu">
+      <button 
+        mat-raised-button
+        class="nav-item"
+        [class.active]="activeCategory === null"
+        (click)="selectAll()">
+        <mat-icon>view_list</mat-icon>
+        全部菜谱
+      </button>
+      
+      <button 
+        *ngFor="let category of categories" 
+        mat-stroked-button
+        class="nav-item"
+        [class.active]="activeCategory === category.name"
+        (click)="selectCategory(category)">
+        <mat-icon>{{ getCategoryIcon(category.name) }}</mat-icon>
+        {{ category.name }}
+      </button>
+    </div>
+
+  </div>
+</mat-toolbar>

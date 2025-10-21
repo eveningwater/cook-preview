@@ -1,0 +1,143 @@
+/* 回到顶部按钮样式 */
+.back-to-top {
+  position: fixed;
+  z-index: 1000;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  opacity: 0.9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: var(--ant-color-primary, #1890ff);
+  color: white;
+  font-family: inherit;
+}
+
+.back-to-top:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.back-to-top:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.back-to-top-icon {
+  font-size: 1.2em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.back-to-top-text {
+  margin-left: 0.5em;
+  font-size: 0.9em;
+}
+
+/* 尺寸变体 */
+.back-to-top-small {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+}
+
+.back-to-top-medium {
+  width: 48px;
+  height: 48px;
+  font-size: 16px;
+}
+
+.back-to-top-large {
+  width: 56px;
+  height: 56px;
+  font-size: 18px;
+}
+
+/* 显示/隐藏状态 */
+.back-to-top-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+}
+
+.back-to-top-visible {
+  opacity: 0.9;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 1.5rem !important;
+    right: 1.5rem !important;
+  }
+  
+  .back-to-top-small {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+  
+  .back-to-top-medium {
+    width: 44px;
+    height: 44px;
+    font-size: 14px;
+  }
+  
+  .back-to-top-large {
+    width: 48px;
+    height: 48px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-to-top {
+    bottom: 1rem !important;
+    right: 1rem !important;
+  }
+  
+  .back-to-top-small {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+  
+  .back-to-top-medium {
+    width: 40px;
+    height: 40px;
+    font-size: 13px;
+  }
+  
+  .back-to-top-large {
+    width: 44px;
+    height: 44px;
+    font-size: 15px;
+  }
+}
+
+/* 主题适配 */
+.theme-dark .back-to-top {
+  background: var(--ant-color-primary, #1890ff);
+  color: white;
+  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.2);
+}
+
+.theme-dark .back-to-top:hover {
+  box-shadow: 0 6px 16px rgba(64, 158, 255, 0.3);
+}
+
+.theme-custom .back-to-top {
+  background: var(--theme-primary, var(--ant-color-primary, #1890ff));
+  color: white;
+  box-shadow: 0 4px 12px var(--theme-shadow, rgba(0, 0, 0, 0.15));
+}
+
+.theme-custom .back-to-top:hover {
+  box-shadow: 0 6px 16px var(--theme-shadow, rgba(0, 0, 0, 0.2));
+}

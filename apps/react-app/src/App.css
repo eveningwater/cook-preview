@@ -1,0 +1,962 @@
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+}
+
+/* 主题变量 */
+:root {
+  --header-height: 64px;
+  /* 默认主题变量 */
+  --ant-color-bg-base: #ffffff;
+  --ant-color-bg-container: #f5f7fa;
+  --ant-color-text: #303133;
+  --ant-color-text-secondary: #606266;
+  --ant-color-border: #dcdfe6;
+  --ant-color-primary: #409eff;
+}
+
+/* 亮色主题 */
+.theme-light {
+  --ant-color-bg-base: #ffffff;
+  --ant-color-bg-container: #f5f7fa;
+  --ant-color-text: #303133;
+  --ant-color-text-secondary: #606266;
+  --ant-color-border: #dcdfe6;
+  --ant-color-primary: #409eff;
+  --ant-color-warning-bg: #fff7e6;
+  --ant-color-warning-text: #d46b08;
+}
+
+/* 深色主题 */
+.theme-dark {
+  --ant-color-bg-base: #1a1a1a;
+  --ant-color-bg-container: #262626;
+  --ant-color-text: #e8e8e8;
+  --ant-color-text-secondary: #c0c0c0;
+  --ant-color-border: #363636;
+  --ant-color-primary: #409eff;
+  --ant-color-warning-bg: #ffd591;
+  --ant-color-warning-text: #d46b08;
+}
+
+/* 自定义主题 */
+.theme-custom {
+  --ant-color-bg-base: var(--theme-surface, #ffffff);
+  --ant-color-bg-container: var(--theme-background, #f5f7fa);
+  --ant-color-text: var(--theme-text, #303133);
+  --ant-color-text-secondary: var(--theme-text-secondary, #606266);
+  --ant-color-border: var(--theme-border, #dcdfe6);
+  --ant-color-primary: var(--theme-primary, #409eff);
+  --ant-color-warning-bg: var(--theme-warning-bg, #fff7e6);
+  --ant-color-warning-text: var(--theme-warning-text, #d46b08);
+}
+
+/* 卡片样式优化 */
+.ant-card-bordered.ant-card-bordered {
+  border: 1px solid var(--ant-color-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.ant-card-bordered.ant-card-bordered:hover {
+  border-color: var(--ant-color-primary);
+  box-shadow: 0 4px 16px rgba(64, 158, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* 下拉菜单样式修复 */
+.ant-dropdown.ant-dropdown {
+  background: var(--ant-color-bg-container);
+  border: 1px solid var(--ant-color-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ant-dropdown-menu.ant-dropdown-menu {
+  background: var(--ant-color-bg-container);
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.ant-dropdown-menu-item.ant-dropdown-menu-item {
+  color: var(--ant-color-text);
+  background: transparent;
+  border-radius: 4px;
+  margin: 2px 0;
+}
+
+.ant-dropdown-menu-item.ant-dropdown-menu-item:hover {
+  background: var(--ant-color-fill);
+  color: var(--ant-color-text);
+}
+
+/* Select下拉框样式修复 */
+.ant-select-dropdown.ant-select-dropdown {
+  background: var(--ant-color-bg-container);
+  border: 1px solid var(--ant-color-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ant-select-item.ant-select-item {
+  color: var(--ant-color-text);
+  background: transparent;
+}
+
+.ant-select-item.ant-select-item:hover {
+  background: var(--ant-color-fill);
+  color: var(--ant-color-text);
+}
+
+.ant-select-item-option-selected.ant-select-item-option-selected {
+  background: var(--ant-color-primary-bg);
+  color: var(--ant-color-primary);
+}
+
+.ant-select-item-option-active.ant-select-item-option-active {
+  background: var(--ant-color-fill);
+  color: var(--ant-color-text);
+}
+
+.ant-dropdown-menu-item-icon.ant-dropdown-menu-item-icon {
+  color: var(--ant-color-text-secondary);
+}
+
+/* 烹饪加载动画 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 40px 20px;
+}
+
+.loading-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.cooking-loader {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pan {
+  width: 80px;
+  height: 40px;
+  background: var(--ant-color-border);
+  border-radius: 0 0 40px 40px;
+  position: relative;
+  box-shadow: 0 2px 4px var(--ant-color-shadow, rgba(0, 0, 0, 0.1));
+  animation: panShake 2s ease-in-out infinite;
+}
+
+.pan::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--ant-color-text-secondary);
+  border-radius: 2px;
+}
+
+.handle {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 8px;
+  background: var(--ant-color-text-secondary);
+  border-radius: 4px;
+}
+
+.ingredients {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+}
+
+.ingredient {
+  position: absolute;
+  border-radius: 50%;
+  animation: ingredientBounce 1.5s ease-in-out infinite;
+}
+
+.ingredient.ingredient-1 {
+  width: 12px;
+  height: 12px;
+  background: var(--ant-color-primary);
+  top: 10px;
+  left: 10px;
+  animation-delay: 0s;
+}
+
+.ingredient.ingredient-2 {
+  width: 10px;
+  height: 10px;
+  background: #4caf50;
+  top: 15px;
+  right: 10px;
+  animation-delay: 0.2s;
+}
+
+.ingredient.ingredient-3 {
+  width: 8px;
+  height: 8px;
+  background: #ffc107;
+  bottom: 15px;
+  left: 15px;
+  animation-delay: 0.4s;
+}
+
+.ingredient.ingredient-4 {
+  width: 14px;
+  height: 14px;
+  background: #e91e63;
+  bottom: 10px;
+  right: 15px;
+  animation-delay: 0.6s;
+}
+
+.steam {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 30px;
+}
+
+.steam-line {
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  background: var(--ant-color-text-secondary);
+  border-radius: 1px;
+  animation: steamRise 2s ease-in-out infinite;
+}
+
+.steam-line:nth-child(1) {
+  left: 8px;
+  animation-delay: 0s;
+}
+
+.steam-line:nth-child(2) {
+  left: 19px;
+  animation-delay: 0.5s;
+}
+
+.steam-line:nth-child(3) {
+  right: 8px;
+  animation-delay: 1s;
+}
+
+.loading-text {
+  text-align: center;
+}
+
+.loading-text h3 {
+  margin: 0 0 8px 0;
+  color: var(--ant-color-text);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.loading-text p {
+  margin: 0;
+  color: var(--ant-color-text-secondary);
+  font-size: 14px;
+}
+
+/* 动画关键帧 */
+@keyframes panShake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-2px) rotate(-1deg); }
+  75% { transform: translateX(2px) rotate(1deg); }
+}
+
+@keyframes ingredientBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.1); }
+}
+
+@keyframes steamRise {
+  0% { 
+    opacity: 0; 
+    transform: translateY(0) scaleY(0.5); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: translateY(-10px) scaleY(1); 
+  }
+  100% { 
+    opacity: 0; 
+    transform: translateY(-20px) scaleY(0.5); 
+  }
+}
+
+/* Markdown内容样式 */
+.markdown-content h1 {
+  font-size: 28px;
+  margin: 24px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ant-color-border);
+  color: var(--ant-color-text);
+}
+
+.markdown-content h2 {
+  font-size: 24px;
+  margin: 20px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--ant-color-border);
+  color: var(--ant-color-text);
+}
+
+.markdown-content h3 {
+  font-size: 20px;
+  margin: 16px 0 8px;
+  color: var(--ant-color-text);
+}
+
+.markdown-content h4 {
+  font-size: 18px;
+  margin: 12px 0 6px;
+  color: var(--ant-color-text);
+}
+
+.markdown-content p {
+  margin: 12px 0;
+  color: var(--ant-color-text);
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin: 12px 0;
+  padding-left: 28px;
+}
+
+.markdown-content li {
+  margin: 6px 0;
+  color: var(--ant-color-text);
+}
+
+.markdown-content code {
+  background-color: var(--ant-color-bg-container);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: var(--ant-color-text);
+}
+
+.markdown-content pre {
+  background-color: var(--ant-color-bg-container);
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 16px 0;
+  border: 1px solid var(--ant-color-border);
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid var(--ant-color-primary);
+  padding-left: 16px;
+  margin: 16px 0;
+  color: var(--ant-color-text-secondary);
+  background-color: var(--ant-color-bg-container);
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid var(--ant-color-border);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.markdown-content th {
+  background-color: var(--ant-color-bg-container);
+  font-weight: 600;
+  color: var(--ant-color-text);
+}
+
+.markdown-content td {
+  color: var(--ant-color-text);
+}
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 16px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.markdown-content a {
+  color: var(--ant-color-primary);
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid var(--ant-color-border);
+  margin: 24px 0;
+}
+
+/* 应用布局样式 */
+.app-layout.app-layout {
+  min-height: 100vh;
+  background: var(--ant-color-bg-base);
+}
+
+/* Header 基础样式 */
+.app-header.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--ant-color-bg-container);
+  border-bottom: 1px solid var(--ant-color-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  height: 64px;
+  line-height: 64px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-right.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon.header-icon {
+  font-size: 24px;
+  color: var(--ant-color-primary);
+}
+
+.header-title.header-title {
+  margin: 0;
+  color: var(--ant-color-text);
+  font-size: 20px;
+}
+
+.header-subtitle.header-subtitle {
+  font-size: 13px;
+  color: var(--ant-color-text-secondary);
+}
+
+.header-icons.header-icons .header-icon.header-icon {
+  font-size: 20px;
+}
+
+/* 页脚样式 */
+.app-footer.app-footer {
+  text-align: center;
+  background: var(--ant-color-bg-container);
+  border-top: 1px solid var(--ant-color-border);
+  padding: 24px 0;
+}
+
+.footer-item.footer-item {
+  margin-bottom: 8px;
+}
+
+.footer-slogan.footer-slogan {
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ant-color-text-secondary);
+}
+
+/* 菜谱详情页面样式 */
+.recipe-detail-main.recipe-detail-main {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.recipe-loading.recipe-loading {
+  padding: 24px;
+  text-align: center;
+}
+
+.back-button-container.back-button-container {
+  margin-bottom: 24px;
+}
+
+.recipe-header.recipe-header {
+  margin-bottom: 24px;
+}
+
+.recipe-content.recipe-content {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--ant-color-text);
+}
+
+.error-actions.error-actions {
+  margin-top: 16px;
+}
+
+.recipe-navigation.recipe-navigation {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ant-color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  /* Header 移动端样式 */
+  .app-header.app-header {
+    height: 64px;
+    min-height: 64px;
+    padding: 8px 16px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  
+  .header-left.header-left {
+    flex: 1;
+    justify-content: flex-start;
+    gap: 8px;
+    min-width: 0; /* 允许内容收缩 */
+  }
+  
+  .header-right.header-right {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  
+  .header-title.header-title {
+    font-size: 16px;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px; /* 限制标题宽度 */
+  }
+  
+  .header-subtitle.header-subtitle {
+    display: none; /* 在移动端隐藏副标题 */
+  }
+  
+  /* 隐藏装饰性图标在移动端 */
+  .header-icons.header-icons {
+    display: none;
+  }
+  
+  .header-controls.header-controls {
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
+  
+  .header-icon.header-icon {
+    font-size: 18px;
+  }
+  
+  /* 版本切换器移动端样式 */
+  .header-controls .ant-select.ant-select {
+    width: 100px;
+    font-size: 12px;
+  }
+  
+  .header-controls .ant-select-selector.ant-select-selector {
+    height: 32px;
+    padding: 0 8px;
+  }
+  
+  .header-controls .ant-select-selection-item.ant-select-selection-item {
+    font-size: 12px;
+    line-height: 30px;
+  }
+  
+  /* 主题切换器移动端样式 */
+  .header-controls .ant-btn.ant-btn {
+    height: 32px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+  
+  /* 主内容区域移动端样式 */
+  .ant-layout-content.ant-layout-content {
+    padding: 10px;
+  }
+  
+  /* 菜谱详情页面移动端样式 */
+  .recipe-detail-content.recipe-detail-content {
+    padding: 10px;
+  }
+  
+  .recipe-detail-content.recipe-detail-content .ant-card.ant-card {
+    margin: 0;
+  }
+  
+  .recipe-detail-content.recipe-detail-content .ant-typography-title.ant-typography-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .recipe-detail-content.recipe-detail-content .ant-btn.ant-btn {
+    height: 36px;
+    padding: 4px 12px;
+    font-size: 14px;
+  }
+  
+  .recipe-detail-content.recipe-detail-content .ant-space.ant-space {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  /* 菜谱详情导航按钮移动端样式 */
+  .recipe-navigation.recipe-navigation {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .recipe-navigation.recipe-navigation .nav-button.nav-button {
+    width: 100%;
+    height: 44px;
+    font-size: 14px;
+  }
+  
+  .recipe-navigation.recipe-navigation .nav-button.nav-button:not(:last-child) {
+    margin-bottom: 0;
+  }
+  
+  /* 菜谱卡片移动端样式 */
+  .ant-card.ant-card {
+    margin-bottom: 16px;
+  }
+  
+  .ant-card-body.ant-card-body {
+    padding: 12px;
+  }
+  
+  .ant-typography-title.ant-typography-title-4.ant-typography-title-4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  /* 搜索组件移动端样式 */
+  .ant-input-search.ant-input-search {
+    width: 100%;
+  }
+  
+  .ant-input-search.ant-input-search .ant-input.ant-input {
+    font-size: 14px;
+  }
+  
+  .ant-input-search.ant-input-search .ant-input-search-button.ant-input-search-button {
+    height: 40px;
+  }
+  
+  /* 分类组件移动端样式 */
+  .ant-collapse.ant-collapse {
+    margin-bottom: 16px;
+  }
+  
+  .ant-collapse-header.ant-collapse-header {
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+  
+  .ant-collapse-content-box.ant-collapse-content-box {
+    padding: 12px 16px;
+  }
+  
+  /* 网格布局移动端调整 */
+  .ant-row.ant-row {
+    margin: 0 -8px;
+  }
+  
+  .ant-col.ant-col {
+    padding: 0 8px;
+    margin-bottom: 16px;
+  }
+  
+  /* Markdown内容移动端样式 */
+  .markdown-content h1 {
+    font-size: 24px;
+  }
+  
+  .markdown-content h2 {
+    font-size: 20px;
+  }
+  
+  .markdown-content h3 {
+    font-size: 18px;
+  }
+  
+  .markdown-content pre {
+    padding: 12px;
+  }
+  
+  .markdown-content ul,
+  .markdown-content ol {
+    padding-left: 20px;
+  }
+  
+  /* 页脚移动端样式 */
+  .ant-layout-footer.ant-layout-footer {
+    padding: 16px;
+    text-align: center;
+  }
+  
+  .ant-layout-footer.ant-layout-footer .ant-typography.ant-typography {
+    font-size: 12px;
+  }
+  
+  /* 主内容区域移动端优化 */
+  .main-content.main-content {
+    min-height: calc(100vh - 64px - 60px);
+  }
+  
+  /* 菜谱分类标题移动端样式 */
+  .ant-typography-title.ant-typography-title-2.ant-typography-title-2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  /* 搜索组件移动端优化 */
+  .ant-space-compact.ant-space-compact {
+    width: 100%;
+  }
+  
+  .ant-space-compact.ant-space-compact .ant-input-search.ant-input-search {
+    flex: 1;
+  }
+  
+  .ant-space-compact.ant-space-compact .ant-btn.ant-btn {
+    flex-shrink: 0;
+  }
+  
+  /* 菜谱卡片网格移动端优化 */
+  .ant-row.ant-row .ant-col.ant-col {
+    margin-bottom: 16px;
+  }
+  
+  /* 加载状态移动端优化 */
+  .loading-container.loading-container {
+    min-height: 300px;
+    padding: 20px;
+  }
+  
+  .loading-animation.loading-animation {
+    gap: 16px;
+  }
+  
+  .cooking-loader.cooking-loader {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .pan.pan {
+    width: 60px;
+    height: 30px;
+  }
+  
+  .ingredients.ingredients {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .loading-text h3 {
+    font-size: 16px;
+  }
+  
+  .loading-text p {
+    font-size: 13px;
+  }
+}
+
+/* 超小屏幕样式 (手机竖屏) */
+@media (max-width: 480px) {
+  .app-header.app-header {
+    padding: 6px 12px;
+    gap: 6px;
+    min-height: 56px;
+  }
+  
+  .header-left.header-left {
+    gap: 6px;
+  }
+  
+  .header-right.header-right {
+    gap: 4px;
+  }
+  
+  .header-title.header-title {
+    font-size: 14px;
+    max-width: 100px; /* 进一步限制标题宽度 */
+  }
+  
+  .header-icon.header-icon {
+    font-size: 16px;
+  }
+  
+  .header-controls.header-controls {
+    gap: 2px;
+  }
+  
+  /* 版本切换器超小屏幕样式 */
+  .header-controls .ant-select.ant-select {
+    width: 80px;
+    font-size: 11px;
+  }
+  
+  .header-controls .ant-select-selector.ant-select-selector {
+    height: 28px;
+    padding: 0 6px;
+  }
+  
+  .header-controls .ant-select-selection-item.ant-select-selection-item {
+    font-size: 11px;
+    line-height: 26px;
+  }
+  
+  /* 主题切换器超小屏幕样式 */
+  .header-controls .ant-btn.ant-btn {
+    height: 28px;
+    padding: 0 6px;
+    font-size: 11px;
+  }
+  
+  .ant-layout-content.ant-layout-content {
+    padding: 8px;
+  }
+  
+  .recipe-detail-content.recipe-detail-content {
+    padding: 8px;
+  }
+  
+  .recipe-detail-content.recipe-detail-content .ant-typography-title.ant-typography-title {
+    font-size: 18px;
+  }
+  
+  .ant-card-body.ant-card-body {
+    padding: 8px;
+  }
+  
+  .ant-typography-title.ant-typography-title-4.ant-typography-title-4 {
+    font-size: 14px;
+  }
+  
+  .ant-input-search.ant-input-search .ant-input.ant-input {
+    height: 36px;
+    font-size: 13px;
+  }
+  
+  .ant-input-search.ant-input-search .ant-input-search-button.ant-input-search-button {
+    height: 36px;
+  }
+  
+  .ant-collapse-header.ant-collapse-header {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  .ant-collapse-content-box.ant-collapse-content-box {
+    padding: 10px 12px;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.markdown-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ant-color-bg-container);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ant-color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ant-color-text-secondary);
+}
+
+/* 修复ant-typography-secondary在暗色主题下的颜色问题 */
+.ant-typography.ant-typography-secondary.ant-typography-secondary {
+  color: var(--ant-color-text-secondary);
+}

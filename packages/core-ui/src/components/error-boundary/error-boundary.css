@@ -1,0 +1,189 @@
+/* 错误边界组件样式 */
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 60px 20px;
+  background: var(--ant-color-bg-container, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-boundary-content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.error-boundary-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.error-boundary-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--ant-color-text, #000000);
+}
+
+.error-boundary-description {
+  margin: 0 0 2rem 0;
+  font-size: 1rem;
+  color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.65));
+  line-height: 1.6;
+}
+
+.error-boundary-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.error-boundary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.error-boundary-retry {
+  background: var(--ant-color-primary, #1890ff);
+  color: white;
+  box-shadow: 0 2px 4px rgba(24, 144, 255, 0.2);
+}
+
+.error-boundary-retry:hover {
+  background: var(--ant-color-primary-hover, #40a9ff);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(24, 144, 255, 0.3);
+}
+
+.error-boundary-back {
+  background: var(--ant-color-bg-container, #ffffff);
+  color: var(--ant-color-text, #000000);
+  border: 1px solid var(--ant-color-border, #d9d9d9);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-boundary-back:hover {
+  background: var(--ant-color-fill, #f5f5f5);
+  border-color: var(--ant-color-primary, #1890ff);
+  color: var(--ant-color-primary, #1890ff);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.error-boundary-btn-icon {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .error-boundary {
+    min-height: 300px;
+    padding: 40px 16px;
+  }
+  
+  .error-boundary-icon {
+    font-size: 3rem;
+  }
+  
+  .error-boundary-title {
+    font-size: 1.25rem;
+  }
+  
+  .error-boundary-description {
+    font-size: 0.9rem;
+  }
+  
+  .error-boundary-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .error-boundary-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .error-boundary {
+    padding: 30px 12px;
+  }
+  
+  .error-boundary-icon {
+    font-size: 2.5rem;
+  }
+  
+  .error-boundary-title {
+    font-size: 1.1rem;
+  }
+  
+  .error-boundary-description {
+    font-size: 0.85rem;
+  }
+}
+
+/* 主题适配 */
+.theme-dark .error-boundary {
+  background: var(--ant-color-bg-container, #141414);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.theme-dark .error-boundary-title {
+  color: var(--ant-color-text, #ffffff);
+}
+
+.theme-dark .error-boundary-description {
+  color: var(--ant-color-text-secondary, rgba(255, 255, 255, 0.65));
+}
+
+.theme-dark .error-boundary-back {
+  background: var(--ant-color-bg-container, #141414);
+  color: var(--ant-color-text, #ffffff);
+  border-color: var(--ant-color-border, #434343);
+}
+
+.theme-dark .error-boundary-back:hover {
+  background: var(--ant-color-fill, #262626);
+  border-color: var(--ant-color-primary, #1890ff);
+  color: var(--ant-color-primary, #1890ff);
+}
+
+.theme-custom .error-boundary {
+  background: var(--theme-surface, var(--ant-color-bg-container, #ffffff));
+  box-shadow: 0 2px 8px var(--theme-shadow, rgba(0, 0, 0, 0.1));
+}
+
+.theme-custom .error-boundary-title {
+  color: var(--theme-text, var(--ant-color-text, #000000));
+}
+
+.theme-custom .error-boundary-description {
+  color: var(--theme-text-secondary, var(--ant-color-text-secondary, rgba(0, 0, 0, 0.65)));
+}
+
+.theme-custom .error-boundary-retry {
+  background: var(--theme-primary, var(--ant-color-primary, #1890ff));
+  box-shadow: 0 2px 4px var(--theme-shadow, rgba(24, 144, 255, 0.2));
+}
+
+.theme-custom .error-boundary-back {
+  background: var(--theme-surface, var(--ant-color-bg-container, #ffffff));
+  color: var(--theme-text, var(--ant-color-text, #000000));
+  border-color: var(--theme-border, var(--ant-color-border, #d9d9d9));
+}

@@ -1,0 +1,73 @@
+.search-container {
+  background: var(--theme-surface);
+  padding: var(--md-sys-spacing-4) 0;
+  border-bottom: 1px solid var(--theme-border);
+  position: sticky;
+  top: 80px; /* 导航栏高度 */
+  z-index: 99;
+}
+
+.search-field {
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  padding: var(--md-sys-spacing-3) var(--md-sys-spacing-4);
+  padding-right: 60px; /* 为图标留空间 */
+  border: 2px solid var(--theme-border);
+  border-radius: var(--md-sys-shape-corner-large);
+  font-size: 1rem;
+  background: var(--theme-background);
+  color: var(--theme-text);
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--theme-primary);
+  box-shadow: 0 0 0 3px rgba(var(--theme-primary-rgb), 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  right: 40px;
+  color: var(--theme-text-secondary);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.clear-button {
+  position: absolute;
+  right: 8px;
+  background: var(--theme-surface-container);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--theme-text-secondary);
+  transition: all 0.2s ease;
+}
+
+.clear-button:hover {
+  background: var(--theme-surface-container-high);
+  color: var(--theme-text);
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    padding: var(--md-sys-spacing-3) var(--md-sys-spacing-4);
+  }
+  
+  .search-field {
+    max-width: 100%;
+  }
+}

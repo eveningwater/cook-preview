@@ -1,0 +1,71 @@
+<div class="recipe-detail-container">
+  <!-- 加载状态 -->
+  <div *ngIf="loading" class="loading-container">
+    <app-cooking-loader 
+      text="正在烹饪美味菜谱..."
+      subText="请稍候，我们正在为您准备详细的制作步骤">
+    </app-cooking-loader>
+  </div>
+
+  <!-- 错误状态 -->
+  <div *ngIf="error && !loading" class="error-container">
+      <div class="error-content">
+        <mat-icon class="error-icon">error</mat-icon>
+        <h3>加载失败</h3>
+        <p>{{ error }}</p>
+        <button (click)="goBack()" class="retry-btn">
+          <mat-icon>arrow_back</mat-icon>
+          返回首页
+        </button>
+      </div>
+  </div>
+
+  <!-- 菜谱详情内容 -->
+  <div *ngIf="recipe && !loading && !error" class="recipe-content">
+    <!-- 返回按钮 -->
+    <button (click)="goBack()" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+      返回菜谱列表
+    </button>
+
+    <!-- 菜谱卡片 -->
+    <div class="recipe-card">
+      <div class="recipe-header">
+        <div class="category-badge">
+          <mat-icon class="category-icon">{{ getCategoryIcon(recipe.path.split('/')[0]) }}</mat-icon>
+          <span class="category-name">{{ recipe.path.split('/')[0] }}</span>
+        </div>
+        <h1 class="recipe-title">{{ recipe.name }}</h1>
+      </div>
+
+      <div class="recipe-main">
+        <div class="recipe-text" [innerHTML]="recipe.content || ''"></div>
+      </div>
+
+      <div class="recipe-footer">
+        <div class="navigation-buttons">
+          <button 
+            (click)="goToPrevious()" 
+            [disabled]="!hasPrevious"
+            class="nav-btn prev-btn">
+            <mat-icon>chevron_left</mat-icon>
+            上一个菜谱
+          </button>
+          
+          <button (click)="goBack()" class="back-btn">
+            <mat-icon>arrow_back</mat-icon>
+            返回菜谱列表
+          </button>
+          
+          <button 
+            (click)="goToNext()" 
+            [disabled]="!hasNext"
+            class="nav-btn next-btn">
+            下一个菜谱
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
