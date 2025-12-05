@@ -72,34 +72,15 @@ export abstract class BaseCookApiService {
       { 'Accept': 'application/json' }
     );
 
-    console.log('getRepoTree response:', response);
     // 新 API 返回格式：{ tree: [...] }
     if (response.tree && Array.isArray(response.tree)) {
-      console.log('getRepoTree response.tree:', response.tree.length, 'items');
-      const blobCount = response.tree.filter((item: any) => item.type === 'blob').length;
-      const treeCount = response.tree.filter((item: any) => item.type === 'tree').length;
-      console.log('Blob files:', blobCount, 'Tree directories:', treeCount);
-      const mdFiles = response.tree.filter((item: any) => item.path && item.path.endsWith('.md'));
-      console.log('Markdown files:', mdFiles.length);
-      if (mdFiles.length > 0) {
-        console.log('First MD file sample:', mdFiles[0]);
-      }
-      if (response.tree.length > 0) {
-        console.log('First item sample:', response.tree[0]);
-      }
-      // 检查是否有分页信息
-      if (response.tree.length === 100) {
-        console.warn('Warning: Returned exactly 100 items, may be truncated. Consider implementing pagination.');
-      }
       return response.tree;
     }
     // 兼容：如果直接返回数组
     if (Array.isArray(response)) {
-      console.log('getRepoTree direct array:', response.length, 'items');
       return response;
     }
     // 兼容其他可能的响应格式
-    console.warn('getRepoTree unexpected response format:', response);
     return response.items || response.entries || [];
   }
 
@@ -135,7 +116,6 @@ export abstract class BaseCookApiService {
             recipes: RecipeUtils.sortRecipesByName(recipes)
           };
         } catch (error) {
-          console.warn(`Failed to load recipes for category ${dirName}:`, error);
           return {
             name: dirName,
             path: dirName,
@@ -188,7 +168,6 @@ export abstract class BaseCookApiService {
           }));
       }
     } catch (error) {
-      console.error('Error loading recipes:', error);
       return [];
     }
   }
@@ -213,7 +192,6 @@ export abstract class BaseCookApiService {
         images
       };
     } catch (error) {
-      console.error('Error loading recipe detail:', error);
       throw error;
     }
   }
@@ -249,7 +227,6 @@ export abstract class BaseCookApiService {
         .filter((item: any) => item.type === 'file' && isImageFile(item.name))
         .map((item: any) => item.name);
     } catch (error) {
-      console.error('Error loading images:', error);
       return [];
     }
   }
@@ -299,7 +276,6 @@ export abstract class BaseCookApiService {
       const mimeType = getMimeType(imagePath);
       return `data:${mimeType};base64,${base64Content}`;
     } catch (error) {
-      console.error('Error loading image:', error);
       // 返回一个占位符图片
       return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+5Zu+54mH5Yqg6L295aSx6LSlPC90ZXh0Pjwvc3ZnPg==';
     }
