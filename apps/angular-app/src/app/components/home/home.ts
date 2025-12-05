@@ -1,7 +1,7 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CookApiService } from '../../../services/cook-api.service';
-import { RecipeCategory, Recipe, RecipeUtils } from '@cook/core';
+import { RecipeCategory } from '@cook/core';
 import { RecipeCategoryComponent } from '../recipe-category/recipe-category';
 import { NavigationComponent } from '../navigation/navigation';
 import { SearchComponent } from '../search/search';
@@ -32,63 +32,17 @@ export class HomeComponent implements OnInit {
     this.error.set('');
 
     try {
-      // 完全按照原版方式：先调用trees/main?recursive=true获取完整目录结构
-      const items = await this.cookApiService.getRepoTree();
+      // 统一在 base-cook-api.service.ts 中处理，前端只负责调用和显示
+      const categories = await this.cookApiService.getRecipeCategories();
       
-      // 从recursive结果中提取中文分类目录
-      const categoryMap = new Map<string, any[]>();
-      
-      items.forEach((item: any) => {
-        if (item.type === 'blob' && 
-            item.path.endsWith('.md') && 
-            !item.path.startsWith('.') &&
-            !item.path.startsWith('images/') &&
-            !item.path.endsWith('/README.md')) {
-          
-          // 提取分类名（路径的第一部分）
-          const pathParts = item.path.split('/');
-          if (pathParts.length >= 2) {
-            const categoryName = pathParts[0];
-            
-            // 检查是否为中文分类
-            if (this.isChineseDirectory(categoryName)) {
-              if (!categoryMap.has(categoryName)) {
-                categoryMap.set(categoryName, []);
-              }
-              categoryMap.get(categoryName)!.push(item);
-            }
-          }
-        }
-      });
-      
-      // 转换为分类数组
-      const categories = Array.from(categoryMap.entries()).map(([categoryName, files]) => ({
-        name: categoryName,
-        path: categoryName,
-        sha: '', // 在recursive模式下不需要SHA
-        recipes: RecipeUtils.sortRecipesByName(
-          files
-            .filter((file: any) => !file.path.endsWith('/README.md')) // 过滤掉README.md文件
-            .map((file: any) => ({
-              name: file.path.replace('.md', '').replace(`${categoryName}/`, ''),
-              path: file.path,
-              sha: file.sha
-            }))
-        )
-      }));
-      
-      // 直接设置分类数据，不预加载菜谱内容
       this.categories.set(categories);
       this.filteredCategories.set([...categories]);
       this.loading.set(false);
     } catch (err: any) {
+      console.error('Error loading recipe data:', err);
       this.error.set('加载菜谱数据失败，请稍后重试');
       this.loading.set(false);
     }
-  }
-
-  private isChineseDirectory(path: string): boolean {
-    return /[\u4e00-\u9fa5]/.test(path);
   }
 
   retryLoad() {

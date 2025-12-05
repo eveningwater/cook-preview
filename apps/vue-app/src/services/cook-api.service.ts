@@ -7,16 +7,14 @@ import { environment } from '../environments/environment';
 
 /**
  * Vue/Axios 的 HTTP 适配器
+ * 注意：认证已改为使用 access_token 查询参数，不再使用 Authorization 头部
  */
 class AxiosHttpAdapter implements HttpAdapter {
   private api: AxiosInstance;
 
-  constructor(token: string) {
-    this.api = axios.create({
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+  constructor(_token: string) {
+    // 不再添加 Authorization 头部，认证通过 access_token 查询参数处理
+    this.api = axios.create();
   }
 
   async get<T>(url: string, config?: any): Promise<T> {

@@ -101,7 +101,6 @@ import Search from '../components/Search.vue';
 import RecipeCategory from '../components/RecipeCategory.vue';
 import BackToTop from '../components/BackToTop.vue';
 import type { RecipeCategory as RecipeCategoryType } from '../models/repo.models';
-import { RecipeUtils } from '@cook/core';
 import { cookApiService } from '../services/cook-api.service';
 
 const categories = ref<RecipeCategoryType[]>([]);
@@ -120,51 +119,8 @@ async function loadRecipeData() {
   error.value = null;
 
   try {
-    // 完全按照 Angular 版本的方式：先调用 trees/main?recursive=true 获取完整目录结构
-    const items = await cookApiService.getRepoTree();
-    
-    // 从 recursive 结果中提取中文分类目录
-    const categoryMap = new Map<string, any[]>();
-    
-    items.forEach(item => {
-      if (
-        item.type === 'blob' &&
-        item.path.endsWith('.md') &&
-        !item.path.startsWith('.') &&
-        !item.path.startsWith('images/') &&
-        !item.path.endsWith('/README.md')
-      ) {
-        // 提取分类名（路径的第一部分）
-        const pathParts = item.path.split('/');
-        if (pathParts.length >= 2) {
-          const categoryName = pathParts[0];
-          
-          // 检查是否为中文分类
-          if (isChineseDirectory(categoryName)) {
-            if (!categoryMap.has(categoryName)) {
-              categoryMap.set(categoryName, []);
-            }
-            categoryMap.get(categoryName)!.push(item);
-          }
-        }
-      }
-    });
-    
-    // 转换为分类数组
-    const loadedCategories = Array.from(categoryMap.entries()).map(([categoryName, files]) => ({
-      name: categoryName,
-      path: categoryName,
-      sha: '',
-      recipes: RecipeUtils.sortRecipesByName(
-        files
-          .filter(file => !file.path.endsWith('/README.md'))
-          .map(file => ({
-            name: file.path.replace('.md', '').replace(`${categoryName}/`, ''),
-            path: file.path,
-            sha: file.sha
-          }))
-      )
-    }));
+    // 统一在 base-cook-api.service.ts 中处理，前端只负责调用和显示
+    const loadedCategories = await cookApiService.getRecipeCategories();
     
     categories.value = loadedCategories;
     filteredCategories.value = [...loadedCategories];
@@ -174,10 +130,6 @@ async function loadRecipeData() {
     loading.value = false;
     console.error('Error loading recipe data:', err);
   }
-}
-
-function isChineseDirectory(path: string): boolean {
-  return /[\u4e00-\u9fa5]/.test(path);
 }
 
 function retryLoad() {

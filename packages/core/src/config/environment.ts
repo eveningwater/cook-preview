@@ -22,9 +22,9 @@ export const createEnvironment = (config: {
   const {
     production = false,
     gitBase = 'https://atomgit.com',
-    apiBase = 'https://api.atomgit.com',
-    token = 'atp_1o5nk6p3ofq0xuet98x4qt5y8qqrlcw0',
-    repoOwner = 'eveningwater',
+    apiBase = 'https://api.gitcode.com',
+    token = 'PEC8ABsV93-Ve1FAAkTmecMx',
+    repoOwner = 'eveningwater11',
     repoName = 'CookLikeHOC'
   } = config;
 

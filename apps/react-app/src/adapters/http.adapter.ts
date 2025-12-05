@@ -16,8 +16,8 @@ export class ReactHttpAdapter implements HttpAdapter {
     const response = await fetch(fullUrl, {
       method: 'GET',
       headers: {
-        'Accept': 'application/vnd.github.v3+json',
-        'Authorization': `token ${environment.token}`,
+        'Accept': 'application/json',
+        // 不再添加 Authorization 头部，认证通过 access_token 查询参数处理
         ...headers,
       },
     });
@@ -41,8 +41,8 @@ export class ReactHttpAdapter implements HttpAdapter {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/vnd.github.v3+json',
-        'Authorization': `token ${environment.token}`,
+        'Accept': 'application/json',
+        // 不再添加 Authorization 头部，认证通过 access_token 查询参数处理
         ...headers,
       },
       body: data ? JSON.stringify(data) : undefined,
@@ -60,8 +60,8 @@ export class ReactHttpAdapter implements HttpAdapter {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/vnd.github.v3+json',
-        'Authorization': `token ${environment.token}`,
+        'Accept': 'application/json',
+        // 不再添加 Authorization 头部，认证通过 access_token 查询参数处理
         ...headers,
       },
       body: data ? JSON.stringify(data) : undefined,
@@ -78,8 +78,8 @@ export class ReactHttpAdapter implements HttpAdapter {
     const response = await fetch(url.startsWith('http') ? url : `${this.baseUrl}${url}`, {
       method: 'DELETE',
       headers: {
-        'Accept': 'application/vnd.github.v3+json',
-        'Authorization': `token ${environment.token}`,
+        'Accept': 'application/json',
+        // 不再添加 Authorization 头部，认证通过 access_token 查询参数处理
         ...headers,
       },
     });

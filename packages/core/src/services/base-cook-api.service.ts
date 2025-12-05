@@ -3,6 +3,7 @@ import { Environment } from '../config/environment';
 import { decodeBase64UTF8, isChineseDirectory, isImageFile, getMimeType } from '../utils/text.utils';
 import { normalizePath, getImageUrl, getLinkUrl } from '../utils/path.utils';
 import { parseReadmeContent, extractImagesFromMarkdown } from '../utils/markdown.utils';
+import { RecipeUtils } from '../utils/recipe.utils';
 
 /**
  * HTTP 请求适配器接口
@@ -28,53 +29,99 @@ export abstract class BaseCookApiService {
   // 接口1: 获取仓库信息
   async getRepoInfo(): Promise<any> {
     const response = await this.getHttpAdapter().get(
-      `${this.environment.apiBase}/repos/${this.environment.repoPath}`,
-      { 'Authorization': `Bearer ${this.environment.token}` }
+      `${this.environment.apiBase}/api/v5/repos/${this.environment.repoOwner}/${this.environment.repoName}?access_token=${this.environment.token}`,
+      { 'Accept': 'application/json' }
     );
     return response;
   }
 
-  // 接口2: 获取文件内容
+  // 接口2: 获取文件内容（统一处理返回格式）
   async getFileContent(path: string): Promise<RepoContent> {
-    const response = await this.getHttpAdapter().get<RepoContent>(
-      `${this.environment.apiBase}/repos/${this.environment.repoPath}/contents/${path}`,
-      { 'Authorization': `Bearer ${this.environment.token}` }
+    const response = await this.getHttpAdapter().get<any>(
+      `${this.environment.apiBase}/api/v5/repos/${this.environment.repoOwner}/${this.environment.repoName}/contents/${path}?access_token=${this.environment.token}`,
+      { 'Accept': 'application/json' }
     );
-    return response;
+    
+    // 统一处理返回格式，确保字段完整
+    return {
+      type: response.type || '',
+      encoding: response.encoding,
+      size: response.size || 0,
+      name: response.name || '',
+      path: response.path || path,
+      content: response.content, // Base64 编码的内容
+      sha: response.sha || '',
+      url: response.url,
+      html_url: response.html_url,
+      download_url: response.download_url,
+      _links: response._links
+    };
   }
 
   // 接口3: 获取目录树
   async getRepoTree(): Promise<RepoItem[]> {
-    const response = await this.getHttpAdapter().get<RepoItem[]>(
-      `${this.environment.apiBase}/repos/${this.environment.repoPath}/trees/main?recursive=true`,
-      { 'Authorization': `Bearer ${this.environment.token}` }
+    // 构建查询参数
+    const params = new URLSearchParams({
+      access_token: this.environment.token,
+      recursive: '1', // API 要求 integer 类型，1 表示递归
+      per_page: '10000' // 每页最大数量，确保获取完整数据
+    });
+    
+    const response = await this.getHttpAdapter().get<any>(
+      `${this.environment.apiBase}/api/v5/repos/${this.environment.repoOwner}/${this.environment.repoName}/git/trees/main?${params.toString()}`,
+      { 'Accept': 'application/json' }
     );
-    return response;
+
+    console.log('getRepoTree response:', response);
+    // 新 API 返回格式：{ tree: [...] }
+    if (response.tree && Array.isArray(response.tree)) {
+      console.log('getRepoTree response.tree:', response.tree.length, 'items');
+      const blobCount = response.tree.filter((item: any) => item.type === 'blob').length;
+      const treeCount = response.tree.filter((item: any) => item.type === 'tree').length;
+      console.log('Blob files:', blobCount, 'Tree directories:', treeCount);
+      const mdFiles = response.tree.filter((item: any) => item.path && item.path.endsWith('.md'));
+      console.log('Markdown files:', mdFiles.length);
+      if (mdFiles.length > 0) {
+        console.log('First MD file sample:', mdFiles[0]);
+      }
+      if (response.tree.length > 0) {
+        console.log('First item sample:', response.tree[0]);
+      }
+      // 检查是否有分页信息
+      if (response.tree.length === 100) {
+        console.warn('Warning: Returned exactly 100 items, may be truncated. Consider implementing pagination.');
+      }
+      return response.tree;
+    }
+    // 兼容：如果直接返回数组
+    if (Array.isArray(response)) {
+      console.log('getRepoTree direct array:', response.length, 'items');
+      return response;
+    }
+    // 兼容其他可能的响应格式
+    console.warn('getRepoTree unexpected response format:', response);
+    return response.items || response.entries || [];
   }
 
-  // 获取所有菜谱分类
+  // 获取所有菜谱分类（统一处理，返回排序后的数据）
   async getRecipeCategories(): Promise<RecipeCategory[]> {
     const items = await this.getRepoTree();
     
-    // 从文件路径中提取目录名
-    const directoryNames = new Set<string>();
-    items.forEach(item => {
-      if (item.path.includes('/')) {
-        const dirName = item.path.split('/')[0];
-        directoryNames.add(dirName);
-      }
-    });
+    // 从 tree 结果中提取中文分类目录（type === 'tree'）
+    // 新 API 的递归树接口只返回目录结构，不包含子目录中的文件
+    const chineseDirectories = items
+      .filter((item: RepoItem) => 
+        item.type === 'tree' && 
+        item.path && 
+        !item.path.startsWith('.') &&
+        item.path !== 'images' &&
+        isChineseDirectory(item.path)
+      )
+      .map((item: RepoItem) => item.path);
     
-    // 过滤出中文菜名目录
-    const chineseCategories = Array.from(directoryNames).filter(dirName => 
-      isChineseDirectory(dirName) &&
-      !dirName.startsWith('.') &&
-      dirName !== 'images'
-    );
-    
-    // 为每个分类获取菜谱列表
+    // 为每个目录获取菜谱列表
     const categoriesWithRecipes = await Promise.all(
-      chineseCategories.map(async (dirName) => {
+      chineseDirectories.map(async (dirName: string) => {
         try {
           const recipes = await this.getRecipesByCategory({
             name: dirName,
@@ -85,7 +132,7 @@ export abstract class BaseCookApiService {
             name: dirName,
             path: dirName,
             sha: '',
-            recipes
+            recipes: RecipeUtils.sortRecipesByName(recipes)
           };
         } catch (error) {
           console.warn(`Failed to load recipes for category ${dirName}:`, error);
@@ -102,19 +149,23 @@ export abstract class BaseCookApiService {
     return categoriesWithRecipes;
   }
 
-  // 获取指定分类下的菜谱列表
+  // 获取指定分类下的菜谱列表（统一处理返回格式）
   async getRecipesByCategory(category: RecipeCategory): Promise<Recipe[]> {
     try {
+      const url = `${this.environment.apiBase}/api/v5/repos/${this.environment.repoOwner}/${this.environment.repoName}/contents/${category.path}?access_token=${this.environment.token}`;
       const response = await this.getHttpAdapter().get<any>(
-        `${this.environment.apiBase}/repos/${this.environment.repoPath}/contents/${category.path}`,
-        { 'Authorization': `Bearer ${this.environment.token}` }
+        url,
+        { 'Accept': 'application/json' }
       );
       
-      // 检查响应是否为数组，如果不是则从entries字段获取
+      // 新 API 返回格式：目录内容返回数组，文件返回单个对象
+      // 检查响应是否为数组，如果不是则从entries字段获取（兼容旧格式）
       const items = Array.isArray(response) ? response : (response.entries || []);
       
       // 查找README.md文件
-      const readmeFile = items.find((item: { name: string }) => item.name === 'README.md');
+      const readmeFile = items.find((item: any) => 
+        item.name === 'README.md' && (item.type === 'file' || item.type === 'blob')
+      );
       
       if (readmeFile) {
         // 如果有README.md文件，获取其内容并解析
@@ -124,13 +175,16 @@ export abstract class BaseCookApiService {
       } else {
         // 如果没有README.md，返回其他.md文件（排除README.md）
         return items
-          .filter((item: { type: string; name: string }) => 
-            item.type === 'file' && item.name.endsWith('.md') && item.name !== 'README.md'
+          .filter((item: any) => 
+            (item.type === 'file' || item.type === 'blob') && 
+            item.name && 
+            item.name.endsWith('.md') && 
+            item.name !== 'README.md'
           )
-          .map((item: { name: string; path: string; sha: string }) => ({
+          .map((item: any) => ({
             name: item.name.replace('.md', ''),
-            path: item.path,
-            sha: item.sha
+            path: item.path || `${category.path}/${item.name}`,
+            sha: item.sha || ''
           }));
       }
     } catch (error) {
@@ -139,16 +193,29 @@ export abstract class BaseCookApiService {
     }
   }
 
-  // 获取菜谱详细内容
+  // 获取菜谱详细内容（统一处理，返回完整的菜谱数据）
   async getRecipeDetail(recipe: Recipe): Promise<Recipe> {
-    const content = await this.getFileContent(recipe.path);
-    const markdownContent = content.content ? decodeBase64UTF8(content.content) : '';
-    
-    return {
-      ...recipe,
-      content: markdownContent,
-      images: extractImagesFromMarkdown(markdownContent)
-    };
+    try {
+      const fileContent = await this.getFileContent(recipe.path);
+      
+      // 解码 Base64 内容
+      const markdownContent = fileContent.content ? decodeBase64UTF8(fileContent.content) : '';
+      
+      // 提取图片
+      const images = extractImagesFromMarkdown(markdownContent);
+      
+      // 返回完整的菜谱数据
+      return {
+        name: recipe.name,
+        path: recipe.path,
+        sha: fileContent.sha || recipe.sha, // 使用文件内容中的 sha，如果没有则使用原来的
+        content: markdownContent,
+        images
+      };
+    } catch (error) {
+      console.error('Error loading recipe detail:', error);
+      throw error;
+    }
   }
 
   // 获取完整的菜谱数据
@@ -171,8 +238,8 @@ export abstract class BaseCookApiService {
   async getImages(): Promise<string[]> {
     try {
       const response = await this.getHttpAdapter().get<any>(
-        `${this.environment.apiBase}/repos/${this.environment.repoPath}/contents/images`,
-        { 'Authorization': `Bearer ${this.environment.token}` }
+        `${this.environment.apiBase}/api/v5/repos/${this.environment.repoOwner}/${this.environment.repoName}/contents/images?access_token=${this.environment.token}`,
+        { 'Accept': 'application/json' }
       );
       
       // 检查响应是否为数组
@@ -213,8 +280,8 @@ export abstract class BaseCookApiService {
       
       // 使用contents API获取图片内容
       const response = await this.getHttpAdapter().get<any>(
-        `${this.environment.apiBase}/repos/${this.environment.repoPath}/contents/${finalPath}`,
-        { 'Authorization': `Bearer ${this.environment.token}` }
+        `${this.environment.apiBase}/api/v5/repos/${this.environment.repoOwner}/${this.environment.repoName}/contents/${finalPath}?access_token=${this.environment.token}`,
+        { 'Accept': 'application/json' }
       );
       
       // 检查不同的响应格式

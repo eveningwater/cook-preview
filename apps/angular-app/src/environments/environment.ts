@@ -6,7 +6,7 @@ declare const GIT_TOKEN: string | undefined;
 
 export const environment = createEnvironment({
   production: false,
-  token: typeof GIT_TOKEN !== 'undefined' ? GIT_TOKEN : 'atp_1o5nk6p3ofq0xuet98x4qt5y8qqrlcw0',
-  repoOwner: 'eveningwater',
+  token: typeof GIT_TOKEN !== 'undefined' ? GIT_TOKEN : 'PEC8ABsV93-Ve1FAAkTmecMx',
+  repoOwner: 'eveningwater11',
   repoName: 'CookLikeHOC'
 });

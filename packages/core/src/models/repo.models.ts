@@ -1,23 +1,30 @@
 export interface RepoItem {
-  mode: string;
-  path: string;
   sha: string;
-  type: 'tree' | 'blob';
+  name: string;
+  type: 'tree' | 'blob' | string;
+  path: string;
+  mode: string;
+  md5?: string;
 }
 
 export interface RepoContent {
-  content?: string;
-  download_url?: string;
+  type: string;
   encoding?: string;
-  entries?: RepoItem[];
-  git_url?: string;
-  html_url?: string;
+  size: number;
   name: string;
   path: string;
+  content?: string; // Base64 编码的内容
   sha: string;
-  size: number;
-  type: 'file' | 'dir';
   url?: string;
+  html_url?: string;
+  download_url?: string;
+  _links?: {
+    self?: string;
+    html?: string;
+  };
+  // 兼容旧格式
+  entries?: RepoItem[];
+  git_url?: string;
 }
 
 export interface RecipeCategory {

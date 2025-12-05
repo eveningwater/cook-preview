@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Typography, Row, Col, Card, Spin, Alert, Space } from 'antd';
-import { RecipeCategory, RepoItem, isChineseDirectory } from '@cook/core';
+import { RecipeCategory } from '@cook/core';
 import { cookApiService } from '../services/cook-api.service';
 import RecipeCategoryComponent from '../components/RecipeCategory';
 import Search from '../components/Search';
@@ -29,51 +29,8 @@ const HomeView: React.FC = () => {
       setLoading(true);
       setError(null);
       
-      // 完全按照 Angular 和 Vue 版本的方式：先调用 trees/main?recursive=true 获取完整目录结构
-      const items = await cookApiService.getRepoTree();
-      
-      // 从 recursive 结果中提取中文分类目录
-      const categoryMap = new Map<string, RepoItem[]>();
-      
-      items.forEach((item: RepoItem) => {
-        // 添加安全检查
-        if (item && 
-            item.type === 'blob' && 
-            item.path && 
-            item.path.endsWith('.md') && 
-            !item.path.startsWith('.') &&
-            !item.path.startsWith('images/') &&
-            !item.path.endsWith('/README.md')) {
-          
-          // 提取分类名（路径的第一部分）
-          const pathParts = item.path.split('/');
-          if (pathParts.length >= 2) {
-            const categoryName = pathParts[0];
-            
-            // 只处理中文分类名
-            if (isChineseDirectory(categoryName)) {
-              if (!categoryMap.has(categoryName)) {
-                categoryMap.set(categoryName, []);
-              }
-              categoryMap.get(categoryName)!.push(item);
-            }
-          }
-        }
-      });
-      
-      // 转换为分类数组，包含菜谱数据
-      const categoriesData: RecipeCategory[] = Array.from(categoryMap.entries()).map(([categoryName, files]) => ({
-        name: categoryName,
-        path: categoryName,
-        sha: '',
-        recipes: files
-          .filter(file => !file.path.endsWith('/README.md'))
-          .map(file => ({
-            name: file.path.replace('.md', '').replace(`${categoryName}/`, ''),
-            path: file.path,
-            sha: file.sha
-          }))
-      }));
+      // 统一在 base-cook-api.service.ts 中处理，前端只负责调用和显示
+      const categoriesData = await cookApiService.getRecipeCategories();
       
       setCategories(categoriesData);
       setFilteredCategories([...categoriesData]);
