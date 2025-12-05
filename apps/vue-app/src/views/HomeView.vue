@@ -128,7 +128,6 @@ async function loadRecipeData() {
   } catch (err) {
     error.value = '加载菜谱数据失败，请稍后重试';
     loading.value = false;
-    console.error('Error loading recipe data:', err);
   }
 }
 

@@ -23,13 +23,6 @@ export class ReactHttpAdapter implements HttpAdapter {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('API Error:', {
-        status: response.status,
-        statusText: response.statusText,
-        url: fullUrl,
-        errorText
-      });
       throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
     }
 

@@ -36,7 +36,6 @@ const HomeView: React.FC = () => {
       setFilteredCategories([...categoriesData]);
       
     } catch (err) {
-      console.error('Error loading recipe data:', err);
       // 使用模拟数据作为fallback
       const fallbackCategories: RecipeCategory[] = [
         { name: '热菜', path: '热菜', sha: '' },

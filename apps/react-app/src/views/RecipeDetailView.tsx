@@ -40,7 +40,6 @@ const RecipeDetailView: React.FC = () => {
       setHasNext(state.hasNext);
     } catch (err) {
       setError('加载菜谱详情失败，请稍后重试');
-      console.error('Error loading recipe detail:', err);
     } finally {
       setLoading(false);
     }

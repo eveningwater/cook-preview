@@ -39,7 +39,6 @@ export class HomeComponent implements OnInit {
       this.filteredCategories.set([...categories]);
       this.loading.set(false);
     } catch (err: any) {
-      console.error('Error loading recipe data:', err);
       this.error.set('加载菜谱数据失败，请稍后重试');
       this.loading.set(false);
     }
