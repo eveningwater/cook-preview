@@ -1,3 +1,14 @@
 node_modules
 dist
 .angular/*
+*.log
+.DS_Store
+*.swp
+*.swo
+*~
+.env
+.env.local
+.env.*.local
+coverage
+*.test.json
+test.json
