@@ -1,6 +1,6 @@
 node_modules
 dist
-.angular/*
+.angular/
 *.log
 .DS_Store
 *.swp
