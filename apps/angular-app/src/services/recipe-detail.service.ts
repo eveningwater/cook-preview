@@ -44,7 +44,8 @@ export class AngularRecipeDetailService extends BaseRecipeDetailService {
    * 实现抽象方法：获取分类菜谱列表
    */
   protected async getRecipesByCategory(category: RecipeCategory): Promise<Recipe[]> {
-    return await this.cookApiService.getRecipesByCategory(category);
+    const response = await this.cookApiService.getRecipesByCategory(category);
+    return response.recipes;
   }
 
   /**

@@ -22,6 +22,26 @@ class AxiosHttpAdapter implements HttpAdapter {
     return response.data;
   }
 
+  async getWithHeaders<T>(url: string, config?: any): Promise<{ data: T; headers: Record<string, string> }> {
+    const response = await this.api.get<T>(url, { ...config, headers: config?.headers });
+    
+    // 提取所有响应头
+    const responseHeaders: Record<string, string> = {};
+    if (response.headers) {
+      Object.keys(response.headers).forEach(key => {
+        const value = response.headers[key];
+        if (value) {
+          responseHeaders[key.toLowerCase()] = Array.isArray(value) ? value.join(', ') : String(value);
+        }
+      });
+    }
+
+    return {
+      data: response.data,
+      headers: responseHeaders
+    };
+  }
+
   async post<T>(url: string, data?: any, config?: any): Promise<T> {
     const response = await this.api.post<T>(url, data, config);
     return response.data;

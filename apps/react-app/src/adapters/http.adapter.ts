@@ -1,4 +1,4 @@
-import { HttpAdapter } from '@cook/core';
+import { HttpAdapter, HttpResponse } from '@cook/core';
 import { environment } from '../environments/environment';
 
 /**
@@ -27,6 +27,33 @@ export class ReactHttpAdapter implements HttpAdapter {
     }
 
     return response.json();
+  }
+
+  async getWithHeaders<T>(url: string, headers?: Record<string, string>): Promise<HttpResponse<T>> {
+    const fullUrl = url.startsWith('http') ? url : `${this.baseUrl}${url}`;
+    const response = await fetch(fullUrl, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        // 不再添加 Authorization 头部，认证通过 access_token 查询参数处理
+        ...headers,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+    }
+
+    // 提取所有响应头
+    const responseHeaders: Record<string, string> = {};
+    response.headers.forEach((value, key) => {
+      responseHeaders[key.toLowerCase()] = value;
+    });
+
+    return {
+      data: await response.json(),
+      headers: responseHeaders
+    };
   }
 
   async post<T>(url: string, data?: any, headers?: Record<string, string>): Promise<T> {

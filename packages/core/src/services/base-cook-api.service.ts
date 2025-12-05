@@ -1,4 +1,4 @@
-import { RepoItem, RepoContent, RecipeCategory, Recipe } from '../models/repo.models';
+import { RepoItem, RepoContent, RecipeCategory, Recipe, PaginationInfo, PaginatedRecipeResponse } from '../models/repo.models';
 import { Environment } from '../config/environment';
 import { decodeBase64UTF8, isChineseDirectory, isImageFile, getMimeType } from '../utils/text.utils';
 import { normalizePath, getImageUrl, getLinkUrl } from '../utils/path.utils';
@@ -6,10 +6,22 @@ import { parseReadmeContent, extractImagesFromMarkdown } from '../utils/markdown
 import { RecipeUtils } from '../utils/recipe.utils';
 
 /**
+ * HTTP 响应结果（包含数据和响应头）
+ */
+export interface HttpResponse<T> {
+  data: T;
+  headers: Record<string, string>;
+}
+
+/**
  * HTTP 请求适配器接口
  */
 export interface HttpAdapter {
   get<T>(url: string, headers?: Record<string, string>): Promise<T>;
+  /**
+   * 获取响应（包含响应头）
+   */
+  getWithHeaders<T>(url: string, headers?: Record<string, string>): Promise<HttpResponse<T>>;
 }
 
 /**
@@ -63,8 +75,7 @@ export abstract class BaseCookApiService {
     // 构建查询参数
     const params = new URLSearchParams({
       access_token: this.environment.token,
-      recursive: '1', // API 要求 integer 类型，1 表示递归
-      per_page: '10000' // 每页最大数量，确保获取完整数据
+      recursive: '1' // API 要求 integer 类型，1 表示递归
     });
     
     const response = await this.getHttpAdapter().get<any>(
@@ -84,12 +95,12 @@ export abstract class BaseCookApiService {
     return response.items || response.entries || [];
   }
 
-  // 获取所有菜谱分类（统一处理，返回排序后的数据）
-  async getRecipeCategories(): Promise<RecipeCategory[]> {
+  // 获取所有菜谱分类（统一处理，返回排序后的数据，支持分页）
+  // 使用 contents API 获取每个分类的菜谱列表，支持分页
+  async getRecipeCategories(page: number = 1, perPage: number = 10): Promise<RecipeCategory[]> {
     const items = await this.getRepoTree();
     
     // 从 tree 结果中提取中文分类目录（type === 'tree'）
-    // 新 API 的递归树接口只返回目录结构，不包含子目录中的文件
     const chineseDirectories = items
       .filter((item: RepoItem) => 
         item.type === 'tree' && 
@@ -100,27 +111,39 @@ export abstract class BaseCookApiService {
       )
       .map((item: RepoItem) => item.path);
     
-    // 为每个目录获取菜谱列表
+    // 为每个分类获取菜谱列表（使用分页）
     const categoriesWithRecipes = await Promise.all(
       chineseDirectories.map(async (dirName: string) => {
         try {
-          const recipes = await this.getRecipesByCategory({
-            name: dirName,
-            path: dirName,
-            sha: ''
-          });
-          return {
+          const { recipes, pagination }: PaginatedRecipeResponse = await this.getRecipesByCategory(
+            {
+              name: dirName,
+              path: dirName,
+              sha: ''
+            },
+            page,
+            perPage
+          );
+          const category: RecipeCategory = {
             name: dirName,
             path: dirName,
             sha: '',
-            recipes: RecipeUtils.sortRecipesByName(recipes)
+            recipes: RecipeUtils.sortRecipesByName(recipes),
+            pagination
           };
+          return category;
         } catch (error) {
           return {
             name: dirName,
             path: dirName,
             sha: '',
-            recipes: []
+            recipes: [],
+            pagination: {
+              totalCount: 0,
+              totalPage: 0,
+              currentPage: page,
+              perPage
+            }
           };
         }
       })
@@ -129,46 +152,72 @@ export abstract class BaseCookApiService {
     return categoriesWithRecipes;
   }
 
-  // 获取指定分类下的菜谱列表（统一处理返回格式）
-  async getRecipesByCategory(category: RecipeCategory): Promise<Recipe[]> {
+  // 获取指定分类下的菜谱列表（统一处理返回格式，支持分页）
+  // 首页只需要文件列表，不获取文件内容，避免不必要的请求
+  async getRecipesByCategory(
+    category: RecipeCategory, 
+    page: number = 1, 
+    perPage: number = 10
+  ): Promise<PaginatedRecipeResponse> {
     try {
-      const url = `${this.environment.apiBase}/api/v5/repos/${this.environment.repoOwner}/${this.environment.repoName}/contents/${category.path}?access_token=${this.environment.token}`;
-      const response = await this.getHttpAdapter().get<any>(
+      const params = new URLSearchParams({
+        access_token: this.environment.token,
+        page: page.toString(),
+        per_page: perPage.toString()
+      });
+      
+      const url = `${this.environment.apiBase}/api/v5/repos/${this.environment.repoOwner}/${this.environment.repoName}/contents/${category.path}?${params.toString()}`;
+      const httpResponse = await this.getHttpAdapter().getWithHeaders<any>(
         url,
         { 'Accept': 'application/json' }
       );
       
+      // 从响应头中提取分页信息
+      const headers = httpResponse.headers;
+      const totalCount = parseInt(headers['total_count'] || headers['x-total-count'] || '0', 10);
+      const totalPage = parseInt(headers['total_page'] || headers['x-total-page'] || '0', 10);
+      
+      // 如果没有 total_page，根据 total_count 和 perPage 计算
+      const calculatedTotalPage = totalPage || (totalCount > 0 ? Math.ceil(totalCount / perPage) : 0);
+      
       // 新 API 返回格式：目录内容返回数组，文件返回单个对象
       // 检查响应是否为数组，如果不是则从entries字段获取（兼容旧格式）
-      const items = Array.isArray(response) ? response : (response.entries || []);
+      const items = Array.isArray(httpResponse.data) ? httpResponse.data : (httpResponse.data.entries || []);
       
-      // 查找README.md文件
-      const readmeFile = items.find((item: any) => 
-        item.name === 'README.md' && (item.type === 'file' || item.type === 'blob')
-      );
+      // 直接返回所有 .md 文件（排除 README.md），不获取 README.md 内容
+      // 这样可以避免首页加载时请求文件内容，只返回文件列表
+      const recipes = items
+        .filter((item: any) => 
+          (item.type === 'file' || item.type === 'blob') && 
+          item.name && 
+          item.name.endsWith('.md') && 
+          item.name !== 'README.md'
+        )
+        .map((item: any) => ({
+          name: item.name.replace('.md', ''),
+          path: item.path || `${category.path}/${item.name}`,
+          sha: item.sha || ''
+        }));
       
-      if (readmeFile) {
-        // 如果有README.md文件，获取其内容并解析
-        const readmeContent = await this.getFileContent(readmeFile.path);
-        const content = readmeContent.content ? decodeBase64UTF8(readmeContent.content) : '';
-        return parseReadmeContent(content, category.path);
-      } else {
-        // 如果没有README.md，返回其他.md文件（排除README.md）
-        return items
-          .filter((item: any) => 
-            (item.type === 'file' || item.type === 'blob') && 
-            item.name && 
-            item.name.endsWith('.md') && 
-            item.name !== 'README.md'
-          )
-          .map((item: any) => ({
-            name: item.name.replace('.md', ''),
-            path: item.path || `${category.path}/${item.name}`,
-            sha: item.sha || ''
-          }));
-      }
+      return {
+        recipes,
+        pagination: {
+          totalCount,
+          totalPage: calculatedTotalPage,
+          currentPage: page,
+          perPage
+        }
+      };
     } catch (error) {
-      return [];
+      return {
+        recipes: [],
+        pagination: {
+          totalCount: 0,
+          totalPage: 0,
+          currentPage: page,
+          perPage
+        }
+      };
     }
   }
 
@@ -205,8 +254,8 @@ export abstract class BaseCookApiService {
     }
     
     const categoryPromises = categories.map(async category => {
-      const recipes = await this.getRecipesByCategory(category);
-      return { ...category, recipes };
+      const { recipes, pagination } = await this.getRecipesByCategory(category);
+      return { ...category, recipes, pagination };
     });
     
     return Promise.all(categoryPromises);

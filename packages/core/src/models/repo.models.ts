@@ -32,6 +32,7 @@ export interface RecipeCategory {
   path: string;
   sha: string;
   recipes?: Recipe[];
+  pagination?: PaginationInfo; // 分页信息
   isExpanded?: boolean;
   hasSearchMatch?: boolean;
 }
@@ -42,4 +43,22 @@ export interface Recipe {
   sha: string;
   content?: string;
   images?: string[];
+}
+
+/**
+ * 分页信息
+ */
+export interface PaginationInfo {
+  totalCount: number; // 总数据数
+  totalPage: number; // 总页数
+  currentPage: number; // 当前页码
+  perPage: number; // 每页数量
+}
+
+/**
+ * 带分页信息的菜谱列表响应
+ */
+export interface PaginatedRecipeResponse {
+  recipes: Recipe[];
+  pagination: PaginationInfo;
 }
