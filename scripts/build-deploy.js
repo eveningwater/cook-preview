@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 构建部署目录
-const deployDir = path.join(__dirname, '../cook-preview-v2');
+const deployDir = path.join(__dirname, '../cook-preview');
 const angularDistDir = path.join(__dirname, '../apps/angular-app/dist');
 const vueDistDir = path.join(__dirname, '../apps/vue-app/dist');
 const reactDistDir = path.join(__dirname, '../apps/react-app/dist');
