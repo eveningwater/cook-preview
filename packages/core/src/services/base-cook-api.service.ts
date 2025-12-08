@@ -1,8 +1,8 @@
-import { RepoItem, RepoContent, RecipeCategory, Recipe, PaginationInfo, PaginatedRecipeResponse } from '../models/repo.models';
+import { RepoItem, RepoContent, RecipeCategory, Recipe, PaginatedRecipeResponse } from '../models/repo.models';
 import { Environment } from '../config/environment';
 import { decodeBase64UTF8, isChineseDirectory, isImageFile, getMimeType } from '../utils/text.utils';
 import { normalizePath, getImageUrl, getLinkUrl } from '../utils/path.utils';
-import { parseReadmeContent, extractImagesFromMarkdown } from '../utils/markdown.utils';
+import { extractImagesFromMarkdown } from '../utils/markdown.utils';
 import { RecipeUtils } from '../utils/recipe.utils';
 
 /**
